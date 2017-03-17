@@ -49,12 +49,7 @@
 		<!-- talend dependencies -->
 		<dependency>
 			<groupId>org.talend.components</groupId>
-			<artifactId>components-api-service-common</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.talend.components</groupId>
-			<artifactId>components-api</artifactId>
+			<artifactId>components-api-service-spi</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -62,12 +57,6 @@
 			<artifactId>components-common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.talend.daikon</groupId>
-			<artifactId>daikon-spring-utils</artifactId>
-			<version>${daikon.version}</version>
-		</dependency>
-
 		<dependency>
 			<groupId>biz.aQute.bnd</groupId>
 			<artifactId>annotation</artifactId>
@@ -249,6 +238,16 @@
 			</plugin>
 
 		</plugins>
+		<resources>
+			<resource>
+				<!-- This enable maven defined variables in banner.txt as ${project.version} -->
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>banner.txt</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 
 	<repositories>
