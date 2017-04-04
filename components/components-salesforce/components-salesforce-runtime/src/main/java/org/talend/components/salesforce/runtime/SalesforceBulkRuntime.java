@@ -29,6 +29,8 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.talend.components.api.exception.ComponentException;
 import org.talend.components.salesforce.SalesforceBulkProperties.Concurrency;
 import org.talend.components.salesforce.SalesforceOutputProperties.OutputAction;
@@ -57,6 +59,8 @@ import com.sforce.ws.ConnectionException;
  */
 
 public class SalesforceBulkRuntime {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SalesforceBulkRuntime.class.getName());
 
     private final String FILE_ENCODING = "UTF-8";
 
@@ -424,17 +428,12 @@ public class SalesforceBulkRuntime {
         }
         job.setContentType(ContentType.CSV);
         job = createJob(job);
-
         job = getJobStatus(job.getId());
-        batchInfoList = new ArrayList<BatchInfo>();
-        BatchInfo info = null;
+
         ByteArrayInputStream bout = new ByteArrayInputStream(queryStatement.getBytes());
-        info = createBatchFromStream(job, bout);
-
+        BatchInfo info = createBatchFromStream(job, bout);
         while (true) {
-            Thread.sleep(secToWait * 1000); // default is 30 sec
             info = getBatchInfo(job.getId(), info.getId());
-
             if (info.getState() == BatchStateEnum.Completed) {
                 QueryResultList list = getQueryResultList(job.getId(), info.getId());
                 queryResultIDs = new HashSet<String>(Arrays.asList(list.getResult())).iterator();
@@ -442,17 +441,20 @@ public class SalesforceBulkRuntime {
             } else if (info.getState() == BatchStateEnum.Failed) {
                 throw new ComponentException(new DefaultErrorCode(HttpServletResponse.SC_BAD_REQUEST, "failedBatch"),
                         ExceptionContext.build().put("failedBatch", info));
-            } else {
-                System.out.println("-------------- waiting ----------" + info);
             }
+
+            LOGGER.debug("Awaiting results ..." + info);
+            Thread.sleep(secToWait * 1000); // default is 30 sec
         }
+        batchInfoList = new ArrayList<BatchInfo>();
         batchInfoList.add(info);
         closeJob();
     }
 
     public BulkResultSet getQueryResultSet(String resultId) throws AsyncApiException, IOException, ConnectionException {
-        baseFileReader = new com.csvreader.CsvReader(new BufferedReader(new InputStreamReader(
-                getQueryResultStream(job.getId(), batchInfoList.get(0).getId(), resultId), FILE_ENCODING)), ',');
+        baseFileReader = new com.csvreader.CsvReader(new BufferedReader(
+                new InputStreamReader(getQueryResultStream(job.getId(), batchInfoList.get(0).getId(), resultId), FILE_ENCODING)),
+                ',');
 
         if (baseFileReader.readRecord()) {
             baseFileHeader = Arrays.asList(baseFileReader.getValues());

@@ -97,7 +97,7 @@ public class SalesforceBulkQueryInputReader extends SalesforceReader<IndexedReco
         String queryText = getQueryString(properties);
         bulkRuntime = new SalesforceBulkRuntime(((SalesforceSource) getCurrentSource()).connect(container).bulkConnection);
         try {
-            bulkRuntime.doBulkQuery(getModuleName(), queryText, 30);
+            bulkRuntime.doBulkQuery(getModuleName(), queryText, 10);
         } catch (AsyncApiException | InterruptedException | ConnectionException e) {
             throw new IOException(e);
         }
