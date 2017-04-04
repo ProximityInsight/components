@@ -16,13 +16,25 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 
 import org.apache.commons.lang3.StringUtils;
+import org.ops4j.pax.url.mvn.ServiceConstants;
+import org.ops4j.pax.url.mvn.internal.Parser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.talend.components.api.exception.ComponentException;
 import org.talend.components.api.exception.error.ComponentsApiErrorCode;
 import org.talend.daikon.exception.ExceptionContext;
+import org.talend.daikon.exception.TalendRuntimeException;
 
 /**
  * this will locate a read the dependencies file for a given artifact.
@@ -42,7 +54,18 @@ org.eclipse.aether:aether-impl:jar:1.0.0.v20140518:compile
  * </pre>
  **
  */
+/**
+ *
+ */
+/**
+ *
+ */
+/**
+ *
+ */
 public class DependenciesReader {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DependenciesReader.class);
 
     private String depTxtPath;
 
@@ -188,4 +211,85 @@ public class DependenciesReader {
         return "mvn:" + groupId + '/' + artifactId + '/' + version + '/' + type + (classifier != null ? '/' + classifier : "");
     }
 
+    /**
+     * this will look inside the jar located at jarURL, making sure that it is a mvn: url type. It will use the maven
+     * groupId and artifactId to find the dependencies file if any and then read it to return the list f all
+     * dependencies.
+     * 
+     * @return the list of depenencies found or an empty list if none found or not a mvn: url
+     */
+    public static List<URL> extractDependenciesFromJarMvnUrl(URL jarUrl) {
+        String pathToDepsFile = computePathToDepsFromMvnUrl(jarUrl);
+        if (pathToDepsFile != null) {
+            DependenciesReader dependenciesReader = new DependenciesReader(pathToDepsFile);
+            try {
+                // we assume that the url is a jar/zip file.
+                try (JarInputStream jarInputStream = new JarInputStream(jarUrl.openStream())) {
+                    return DependenciesReader.extractDependencyFromStream(dependenciesReader, pathToDepsFile, jarInputStream);
+                }
+            } catch (IOException e) {
+                throw new ComponentException(ComponentsApiErrorCode.COMPUTE_DEPENDENCIES_FAILED, e,
+                        ExceptionContext.withBuilder().put("path", pathToDepsFile).build());
+            }
+        } else {
+            LOG.error("trying to get depenencies from an non mvn URL :" + jarUrl);
+            return Collections.emptyList();
+        }
+    }
+
+    /**
+     * compture the path from the groupId and the artifact id of the jar mvn url. return the path or null if it not a
+     * mvn: URL.
+     */
+    static String computePathToDepsFromMvnUrl(URL jarMvnUrl) {
+        // make sure that it is a mvn protocol.
+        String protocol = jarMvnUrl != null ? jarMvnUrl.getProtocol() : null;
+        if (ServiceConstants.PROTOCOL.equals(protocol)) {
+            try {
+                Parser mvnUrlParser = new Parser(jarMvnUrl.getPath());
+                return computeDependenciesFilePath(mvnUrlParser.getGroup(), mvnUrlParser.getArtifact());
+            } catch (MalformedURLException e) {// should never happend cause the paramter is already a URL
+                throw TalendRuntimeException.createUnexpectedException(e);
+            }
+        } else {// unexpected protocol so return null
+            return null;
+        }
+
+    }
+
+    /**
+     * this will look inside the jar located at jarURL, assuming this is a jar and look for the file at the
+     * pathToDepsFile. It will then extract the list of dependencies from that file
+     */
+    public static List<URL> extractDepenenciesFromJarUrl(URL jarUrl, String pathToDepsFile) {
+        DependenciesReader dependenciesReader = new DependenciesReader(pathToDepsFile);
+        try {
+            // we assume that the url is a jar/zip file.
+            try (JarInputStream jarInputStream = new JarInputStream(jarUrl.openStream())) {
+                return DependenciesReader.extractDependencyFromStream(dependenciesReader, pathToDepsFile, jarInputStream);
+            }
+        } catch (IOException e) {
+            throw new ComponentException(ComponentsApiErrorCode.COMPUTE_DEPENDENCIES_FAILED, e,
+                    ExceptionContext.withBuilder().put("path", pathToDepsFile).build());
+        }
+    }
+
+    protected static List<URL> extractDependencyFromStream(DependenciesReader dependenciesReader, String depTxtPath,
+            JarInputStream jarInputStream) throws IOException, MalformedURLException {
+        JarEntry nextJarEntry = jarInputStream.getNextJarEntry();
+        while (nextJarEntry != null) {
+            if (depTxtPath.equals(nextJarEntry.getName())) {// we got it so parse it.
+                Set<String> dependencies = dependenciesReader.parseDependencies(jarInputStream);
+                // convert the string to URL
+                List<URL> result = new ArrayList<>(dependencies.size());
+                for (String urlString : dependencies) {
+                    result.add(new URL(urlString));
+                }
+                return result;
+            }
+            nextJarEntry = jarInputStream.getNextJarEntry();
+        }
+        throw new ComponentException(ComponentsApiErrorCode.COMPUTE_DEPENDENCIES_FAILED,
+                ExceptionContext.withBuilder().put("path", depTxtPath).build());
+    }
 }

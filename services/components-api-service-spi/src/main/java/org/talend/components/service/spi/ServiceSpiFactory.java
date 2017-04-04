@@ -13,9 +13,12 @@
 package org.talend.components.service.spi;
 
 import java.net.URL;
+import java.util.HashSet;
 import java.util.ServiceLoader;
+import java.util.Set;
 
 import org.talend.components.api.ComponentInstaller;
+import org.talend.components.api.component.runtime.DependenciesReader;
 import org.talend.components.api.service.ComponentService;
 import org.talend.components.api.service.common.ComponentServiceImpl;
 import org.talend.components.api.service.common.DefinitionRegistry;
@@ -23,6 +26,9 @@ import org.talend.components.api.service.common.DefinitionRegistry;
 /**
  * Provide a {@link DefinitionRegistry} and {@link ComponentService} based on the jars currently available in the
  * classpath.
+ */
+/**
+ *
  */
 public class ServiceSpiFactory {
 
@@ -52,29 +58,43 @@ public class ServiceSpiFactory {
     }
 
     /**
-     * create the singleton registry adding the classpath to the jvm classpath. if the classpath is null (or empty) then the
-     * existing registry is returned, otherwise a new registry is constructed with the new classpath added to the
-     * current jvm classpath .
+     * create the singleton registry reading all the dependencies embedded in each component from the componentUrls and
+     * adding them to the current service classpath. if the componentUrls is null (or empty) then the existing registry
+     * is returned, otherwise a new registry is constructed with all the dependencies computed from each of the
+     * components and they are added to the current service classpath .
      */
-    public static synchronized DefinitionRegistry createDefinitionRegistry(URL[] classpath) {
-        if (defReg == null || (classpath != null && classpath.length > 0)) {
+    public static synchronized DefinitionRegistry createDefinitionRegistry(URL[] componentUrls) {
+        if (defReg == null || (componentUrls != null && componentUrls.length > 0)) {
             extensibleClassLoader = new ExtensibleUrlClassLoader(ServiceSpiFactory.class.getClassLoader());
-            createInternalDefintionRegistry(classpath);
+            URL[] allDependenciesURLs = readAllComponentDependencies(componentUrls);
+            createInternalDefintionRegistry(allDependenciesURLs);
         }
         return defReg;
     }
 
     /**
-     * return a singleton registry adding the classpath to the existing registry classpath if any. if the classpath is
-     * null then the existing registry is returned, otherwise a new registry is constructed with the classpath added
-     * current registry classpath.
+     * this will gather all components dependencies jar urls.
      */
-    public static synchronized DefinitionRegistry createUpdatedDefinitionRegistry(URL[] classpath) {
-        if (defReg == null || classpath != null) {
+    private static URL[] readAllComponentDependencies(URL[] componentUrls) {
+        Set<URL> dependenciesUrl = new HashSet<>(componentUrls.length * 3);// assuming at least 3 deps
+        for (URL compURL : componentUrls) {
+            dependenciesUrl.addAll(DependenciesReader.extractDependenciesFromJarMvnUrl(compURL));
+        }
+        return dependenciesUrl.toArray(new URL[dependenciesUrl.size()]);
+    }
+
+    /**
+     * return a singleton registry adding all the dependencied of the componentURLs to the existing registry classpath
+     * if any. if the componentsUrls is null then the existing registry is returned, otherwise a new registry is
+     * constructed with each component dependencies added current registry classpath.
+     */
+    public static synchronized DefinitionRegistry createUpdatedDefinitionRegistry(URL[] componentsUrls) {
+        if (defReg == null || componentsUrls != null) {
             if (extensibleClassLoader == null) {
                 extensibleClassLoader = new ExtensibleUrlClassLoader(ServiceSpiFactory.class.getClassLoader());
             } // else use the existing classloader
-            createInternalDefintionRegistry(classpath);
+            URL[] allDependenciesURLs = readAllComponentDependencies(componentsUrls);
+            createInternalDefintionRegistry(allDependenciesURLs);
         }
         return defReg;
     }
