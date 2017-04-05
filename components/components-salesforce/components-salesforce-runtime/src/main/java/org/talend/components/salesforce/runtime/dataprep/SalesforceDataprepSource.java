@@ -82,8 +82,7 @@ public final class SalesforceDataprepSource
         datastore = dataset.getDatastoreProperties();
 
         String config_file = System.getProperty(CONFIG_FILE_lOCATION_KEY);
-        try (InputStream is = config_file != null ? (new FileInputStream(config_file))
-                : this.getClass().getClassLoader().getResourceAsStream("salesforce.properties")) {
+        try (InputStream is = config_file != null ? (new FileInputStream(config_file)) : null) {
             if (is == null) {
                 LOG.warn("not found the property file, will use the default value for endpoint and timeout");
                 return ValidationResult.OK;

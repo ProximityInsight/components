@@ -119,7 +119,7 @@ public final class SalesforceBulkQueryReader extends AbstractBoundedReader<Index
     protected void executeSalesforceBulkQuery() throws IOException, ConnectionException {
         String queryText = getQueryString();
         try {
-            bulkRuntime.doBulkQuery(getModuleName(), queryText, 10);
+            bulkRuntime.doBulkQuery(getModuleName(), queryText);
         } catch (AsyncApiException | InterruptedException | ConnectionException e) {
             throw new IOException(e);
         }
