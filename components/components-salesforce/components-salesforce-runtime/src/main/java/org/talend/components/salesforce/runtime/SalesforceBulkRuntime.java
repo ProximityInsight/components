@@ -428,42 +428,45 @@ public class SalesforceBulkRuntime {
         }
         job.setContentType(ContentType.CSV);
         job = createJob(job);
-        job = getJobStatus(job.getId());
+        if (job.getId() == null) { // job creation failed
+            throw new ComponentException(new DefaultErrorCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "failedBatch"),
+                    ExceptionContext.build().put("failedBatch", job));
+        }
 
         ByteArrayInputStream bout = new ByteArrayInputStream(queryStatement.getBytes());
         BatchInfo info = createBatchFromStream(job, bout);
-        int secToWait = 2;
+        int secToWait = 1;
         int tryCount = 0;
         while (true) {
+            LOGGER.debug("Awaiting " + secToWait + " seconds for results ...\n" + info);
+            Thread.sleep(secToWait * 1000);
             info = getBatchInfo(job.getId(), info.getId());
             if (info.getState() == BatchStateEnum.Completed) {
-                QueryResultList list = getQueryResultList(job.getId(), info.getId());
-                queryResultIDs = new HashSet<String>(Arrays.asList(list.getResult())).iterator();
                 break;
             } else if (info.getState() == BatchStateEnum.Failed) {
                 throw new ComponentException(new DefaultErrorCode(HttpServletResponse.SC_BAD_REQUEST, "failedBatch"),
                         ExceptionContext.build().put("failedBatch", info));
             }
-
             tryCount++;
-            if (tryCount % 5 == 0) {// after 5 attemp to get the result we increase the time to wait by 2
-                secToWait = secToWait * 2;
+            if (tryCount % 3 == 0) {// after 3 attempt to get the result we multiply the time to wait by 2
+                secToWait = secToWait * 3;
             }
-            // Number of attempts to query 15 attempts at 10 minutes each to process the batch. There is also a 2-minute limit on
-            // the time to process the query. If more than 15 attempts are made for the query, an error message of “Tried more
-            // than fifteen times” is returned. If the query takes more than 2 minutes to process, a QUERY_TIMEOUT error is
-            // returned.
+            // There is also a 2-minute limit on the time to process the query.
+            // If the query takes more than 2 minutes to process, a QUERY_TIMEOUT error is returned.
             // https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_concepts_limits.htm
-            if (secToWait > 120 || tryCount > 15) {
+            int processingTime = (int) ((System.currentTimeMillis() - job.getCreatedDate().getTimeInMillis()) / 1000);
+            if (processingTime > 120) {
                 throw new ComponentException(new DefaultErrorCode(HttpServletResponse.SC_REQUEST_TIMEOUT, "failedBatch"),
                         ExceptionContext.build().put("failedBatch", info));
             }
-            LOGGER.info("Awaiting " + secToWait + " seconds for results ...\n" + info);
-            Thread.sleep(secToWait * 1000);
         }
+
+        closeJob();
+        QueryResultList list = getQueryResultList(job.getId(), info.getId());
+        queryResultIDs = new HashSet<String>(Arrays.asList(list.getResult())).iterator();
         batchInfoList = new ArrayList<BatchInfo>();
         batchInfoList.add(info);
-        closeJob();
+
     }
 
     public BulkResultSet getQueryResultSet(String resultId) throws AsyncApiException, IOException, ConnectionException {
