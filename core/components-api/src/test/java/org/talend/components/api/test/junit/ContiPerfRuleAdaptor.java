@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -66,8 +66,9 @@ public class ContiPerfRuleAdaptor extends ContiPerfRule {
     /**
      * The purpose of this method is to recreate statement with JUnit 4.12 and higher adapters.
      */
-    private Statement recreateStatementWithAdapters(Statement base, FrameworkMethod method, Object target) {
+    private Statement recreateStatementWithAdapters(Statement baseStatement, FrameworkMethod method, Object target) {
         testsRegistry.registerClassPerfTestMethods(method.getMethod().getDeclaringClass());
+        Statement base = baseStatement;
         RunBefores runBefores = null;
         RunAfters runAfters = null;
         while (base instanceof RunAfters || base instanceof RunBefores) {
@@ -91,18 +92,12 @@ public class ContiPerfRuleAdaptor extends ContiPerfRule {
         try {
             // if runBefores has been removed, reapply it
             if (runBefores != null) {
-                runBefores = recreateFromRunBefores(runBefores);
-                Field fNext = runBefores.getClass().getDeclaredField("fNext");
-                fNext.setAccessible(true);
-                fNext.set(runBefores, base);
+                runBefores = recreateFromRunBefores(runBefores, base);
                 base = runBefores;
             }
             // if runAfters has been removed, reapply it
             if (runAfters != null) {
-                runAfters = recreateFromRunAfters(runAfters);
-                Field fNext = runAfters.getClass().getDeclaredField("fNext");
-                fNext.setAccessible(true);
-                fNext.set(runAfters, base);
+                runAfters = recreateFromRunAfters(runAfters, base);
                 base = runAfters;
             }
         } catch (Exception e) {
@@ -111,17 +106,15 @@ public class ContiPerfRuleAdaptor extends ContiPerfRule {
         return base;
     }
 
-    private RunBefores recreateFromRunBefores(RunBefores runBefores)
+    private RunBefores recreateFromRunBefores(RunBefores runBefores, Statement next)
             throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-        return new RunBeforesContiPerfAdapter(getObjectByField(runBefores, runBefores.getClass(), "next", Statement.class),
-                getObjectByField(runBefores, runBefores.getClass(), "befores", List.class),
+        return new RunBeforesContiPerfAdapter(next, getObjectByField(runBefores, runBefores.getClass(), "befores", List.class),
                 getObjectByField(runBefores, runBefores.getClass(), "target", Object.class));
     }
 
-    private RunAfters recreateFromRunAfters(RunAfters runAfters)
+    private RunAfters recreateFromRunAfters(RunAfters runAfters, Statement next)
             throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-        return new RunAftersContiPerfAdapter(getObjectByField(runAfters, runAfters.getClass(), "next", Statement.class),
-                getObjectByField(runAfters, runAfters.getClass(), "afters", List.class),
+        return new RunAftersContiPerfAdapter(next, getObjectByField(runAfters, runAfters.getClass(), "afters", List.class),
                 getObjectByField(runAfters, runAfters.getClass(), "target", Object.class));
     }
 
