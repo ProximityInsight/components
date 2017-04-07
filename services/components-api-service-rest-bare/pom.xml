@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+
+
+	<groupId>org.talend.components</groupId>
+	<artifactId>components-api-service-rest-bare</artifactId>
+	<version>0.18.0-SNAPSHOT</version>
+
+	<name>Component REST API Bare service</name>
+
+	<dependencies>
+		<!-- service deps -->
+		<dependency>
+			<groupId>org.talend.components</groupId>
+			<artifactId>components-api-service-rest</artifactId>
+			<version>${project.version}</version>
+			<classifier>lib</classifier>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+
+					<execution>
+						<id>default-jar</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<!-- bind to a non existing phase to prevent jar creation -->
+						<phase>never</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-invoker-plugin</artifactId>
+				<version>2.0.0-TALEND</version>
+				<configuration>
+					<localRepositoryPath>target/mvn-repo</localRepositoryPath>
+				</configuration>
+				<executions>
+					<execution>
+						<id>generate-service-maven-repo</id>
+						<phase>package</phase>
+						<goals>
+							<goal>install</goal>
+						</goals>
+						<configuration>
+							<pomIncludes>
+								<pomInclude>*/pom.xml</pomInclude>
+							</pomIncludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<!-- create a class path with all the compile scope dependencies of this 
+					pom using the local maven repository -->
+				<groupId>com.github.veithen.alta</groupId>
+				<artifactId>alta-maven-plugin</artifactId>
+				<version>0.5.2-TALEND</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate-properties</goal>
+						</goals>
+						<configuration>
+							<name>classpath.linux</name>
+							<value>.m2/%mavenPath%</value>
+							<separator>${path.separator}</separator>
+							<dependencySet>
+								<scope>compile</scope>
+							</dependencySet>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<!-- this computes the tcom service classpath using maven artifacts -->
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>compute-classpath</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<exportAntProperties>true</exportAntProperties>
+							<tasks>
+								<!-- replace the local repository path with .m2 in the computed local.classpath -->
+								<loadresource property="classpath.windows">
+									<propertyresource name="classpath.linux" />
+									<filterchain>
+										<tokenfilter>
+											<filetokenizer />
+											<replacestring from="/" to="\" />
+										</tokenfilter>
+									</filterchain>
+								</loadresource>
+								<echo message="final classpath:${classpath.linux}" />
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>no-arch-package</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>assembly/no-arch.xml</descriptor>
+							</descriptors>
+							<appendAssemblyId>false</appendAssemblyId>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<profile>
+			<id>skipTestRun</id>
+			<activation>
+				<property>
+					<name>skipTests</name>
+				</property>
+			</activation>
+			<properties>
+				<really.skip.tests>true</really.skip.tests>
+			</properties>
+		</profile>
+		<profile>
+			<id>skipTestItRun</id>
+			<activation>
+				<property>
+					<name>skipITs</name>
+				</property>
+			</activation>
+			<properties>
+				<really.skip.tests>true</really.skip.tests>
+			</properties>
+		</profile>
+	</profiles>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>releases</id>
+			<url>https://artifacts-oss.talend.com/nexus/content/repositories/TalendOpenSourceRelease/</url>
+		</pluginRepository>
+	</pluginRepositories>
+	<repositories>
+		<repository>
+			<id>releases</id>
+			<url>https://artifacts-oss.talend.com/nexus/content/repositories/TalendOpenSourceRelease/</url>
+		</repository>
+		<repository>
+			<id>talend_nexus</id>
+			<name>snapshots</name>
+			<url>https://artifacts-oss.talend.com/nexus/content/repositories/TalendOpenSourceSnapshot/</url>
+		</repository>
+		<repository>
+			<id>talend-update</id>
+			<url>https://talend-update.talend.com/nexus/content/repositories/libraries/</url>
+		</repository>
+	</repositories>
+</project>

@@ -17,8 +17,11 @@ import java.util.HashSet;
 import java.util.ServiceLoader;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.talend.components.api.ComponentInstaller;
 import org.talend.components.api.component.runtime.DependenciesReader;
+import org.talend.components.api.exception.ComponentException;
 import org.talend.components.api.service.ComponentService;
 import org.talend.components.api.service.common.ComponentServiceImpl;
 import org.talend.components.api.service.common.DefinitionRegistry;
@@ -31,6 +34,8 @@ import org.talend.components.api.service.common.DefinitionRegistry;
  *
  */
 public class ServiceSpiFactory {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ServiceSpiFactory.class);
 
     /** Singleton for definition registry. This will be reloaded if set to null. */
     private static DefinitionRegistry defReg;
@@ -78,7 +83,11 @@ public class ServiceSpiFactory {
     private static URL[] readAllComponentDependencies(URL[] componentUrls) {
         Set<URL> dependenciesUrl = new HashSet<>(componentUrls.length * 3);// assuming at least 3 deps
         for (URL compURL : componentUrls) {
-            dependenciesUrl.addAll(DependenciesReader.extractDependenciesFromJarMvnUrl(compURL));
+            try{
+                dependenciesUrl.addAll(DependenciesReader.extractDependenciesFromJarMvnUrl(compURL));
+            }catch(ComponentException ce){
+                LOG.error("Failed to load component from URL[" + compURL + "] because :" + ce.getMessage());
+            }
         }
         return dependenciesUrl.toArray(new URL[dependenciesUrl.size()]);
     }

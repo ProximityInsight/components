@@ -15,7 +15,6 @@
 	<version>0.18.0-SNAPSHOT</version>
 
 	<name>Component REST API</name>
-
 	<properties>
 		<java.version>1.8</java.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -30,12 +29,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-            	<exclusion>
-            		<groupId>org.slf4j</groupId>
-            		<artifactId>log4j-over-slf4j</artifactId>
-            	</exclusion>
-            </exclusions>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>log4j-over-slf4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -161,18 +160,23 @@
 	<build>
 		<plugins>
 			<plugin>
+				<!-- prevent spring plugin to create a big startable jar -->
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>default-jar</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>jar-lib</id>
+						<id>lib-jar</id>
 						<phase>package</phase>
 						<goals>
 							<goal>jar</goal>
@@ -190,6 +194,15 @@
 						<goals>
 							<goal>test-jar</goal>
 						</goals>
+					</execution>
+
+					<execution>
+						<id>package-service</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<!-- bind to a non existing phase to avoid service jar creation -->
+						<phase>never</phase>
 					</execution>
 				</executions>
 			</plugin>
@@ -219,6 +232,9 @@
 							<goal>run</goal>
 						</goals>
 						<configuration>
+							<skipInstallation>${really.skip.tests}</skipInstallation>
+							<skipInvocation>${really.skip.tests}</skipInvocation>
+
 							<localRepositoryPath>${project.build.directory}/it-repo</localRepositoryPath>
 							<settingsFile>src/it/settings.xml</settingsFile>
 							<extraArtifacts>
@@ -236,7 +252,6 @@
 
 				</executions>
 			</plugin>
-
 		</plugins>
 		<resources>
 			<resource>
@@ -249,6 +264,30 @@
 			</resource>
 		</resources>
 	</build>
+	<profiles>
+		<profile>
+			<id>skipTestRun</id>
+			<activation>
+				<property>
+					<name>skipTests</name>
+				</property>
+			</activation>
+			<properties>
+				<really.skip.tests>true</really.skip.tests>
+			</properties>
+		</profile>
+		<profile>
+			<id>skipTestItRun</id>
+			<activation>
+				<property>
+					<name>skipITs</name>
+				</property>
+			</activation>
+			<properties>
+				<really.skip.tests>true</really.skip.tests>
+			</properties>
+		</profile>
+	</profiles>
 
 	<repositories>
 		<repository>
