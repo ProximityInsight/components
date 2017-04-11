@@ -90,7 +90,7 @@ public class FilterExpressionTableTest {
         columns.add(AzureStorageTableProperties.TABLE_PARTITION_KEY);
         functions.add(Comparison.EQUAL.toString());
         values.add("12345");
-        predicates.add(Predicate.NOT.toString());
+        predicates.add(Predicate.AND.toString());
         fieldTypes.add(STRING.toString());
         setTableVals();
         query = fet.generateCombinedFilterConditions();
@@ -148,7 +148,7 @@ public class FilterExpressionTableTest {
         columns.add(AzureStorageTableProperties.TABLE_PARTITION_KEY);
         functions.add(Comparison.EQUAL.toString());
         values.add("12345");
-        predicates.add(Predicate.NOT.toString());
+        predicates.add(Predicate.AND.toString());
         fieldTypes.add(SupportedFieldType.STRING.toString());
         setTableVals();
         assertFalse(fet.generateCombinedFilterConditions().isEmpty());
@@ -197,7 +197,6 @@ public class FilterExpressionTableTest {
     public void testGetOperator() {
         assertEquals(Operators.AND, Predicate.getOperator(Predicate.AND.toString()));
         assertEquals(Operators.OR, Predicate.getOperator(Predicate.OR.toString()));
-        assertEquals(Operators.NOT, Predicate.getOperator(Predicate.NOT.toString()));
     }
 
 }
