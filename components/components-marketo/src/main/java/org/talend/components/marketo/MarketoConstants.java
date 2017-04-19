@@ -60,6 +60,8 @@ public class MarketoConstants {
 
     public static final String FIELD_DEDUPE_FIELDS = "dedupeFields";
 
+    public static final String FIELD_CAMPAIGN_ID = "campaignId";
+
     public static final String DATETIME_PATTERN_PARAM = "yyyy-MM-dd HH:mm:ss";
 
     public static final String DATETIME_PATTERN_REST = "yyyy-MM-dd'T'HH:mm:ss'Z'";
@@ -367,6 +369,71 @@ public class MarketoConstants {
                 .name("status").type().nullable().stringType().noDefault() //
                 .name("failuresLogFile").type().nullable().stringType().noDefault() //
                 .name("warningsLogFile").type().nullable().stringType().noDefault() //
+                .endRecord();
+        s.addProp(SchemaConstants.TALEND_IS_LOCKED, "true");
+        return s;
+    }
+
+    /**
+     * Campaign Operations
+     */
+    public static Schema getCampaignSchema() {
+        Schema s = SchemaBuilder.builder().record("campaign").fields() //
+                .name("id").prop(SchemaConstants.TALEND_COLUMN_IS_KEY, "true").type().nullable().intType().noDefault() //
+                .name("name").type().nullable().stringType().noDefault() //
+                .name("active").type().nullable().booleanType().noDefault() //
+                .name("description").type().nullable().stringType().noDefault() //
+                .name("programId").type().nullable().intType().noDefault() //
+                .name("programName").type().nullable().stringType().noDefault() //
+                .name("type").type().nullable().stringType().noDefault() //
+                .name("workspaceName").type().nullable().stringType().noDefault() //
+                .name(FIELD_CREATED_AT)//
+                .prop(SchemaConstants.TALEND_COLUMN_PATTERN, DATETIME_PATTERN_REST)//
+                .prop(SchemaConstants.JAVA_CLASS_FLAG, Date.class.getCanonicalName()) //
+                .type(AvroUtils._date()).noDefault()//
+                .name(FIELD_UPDATED_AT)//
+                .prop(SchemaConstants.TALEND_COLUMN_PATTERN, DATETIME_PATTERN_REST)//
+                .prop(SchemaConstants.JAVA_CLASS_FLAG, Date.class.getCanonicalName()) //
+                .type(AvroUtils._date()).noDefault()//
+                .endRecord();
+        s.addProp(SchemaConstants.TALEND_IS_LOCKED, "true");
+        return s;
+    }
+
+    public static Schema scheduleCampaignSchema() {
+        Schema s = SchemaBuilder.builder().record("scheduleCampaign").fields() //
+                .name(FIELD_CAMPAIGN_ID)//
+                .prop(SchemaConstants.TALEND_COLUMN_IS_KEY, "true")//
+                .prop(SchemaConstants.TALEND_IS_LOCKED, "true")//
+                .type().nullable().intType().noDefault() //
+                .name(FIELD_STATUS).type().nullable().stringType().noDefault()//
+                .endRecord();
+        s.addProp(SchemaConstants.TALEND_IS_LOCKED, "true");
+        return s;
+    }
+
+    public static Schema triggerCampaignSchema() {
+        Schema s = SchemaBuilder.builder().record("triggerCampaign").fields() //
+                .name("leadId")//
+                .prop(SchemaConstants.TALEND_COLUMN_IS_KEY, "true")//
+                .prop(SchemaConstants.TALEND_IS_LOCKED, "true")//
+                .type().nullable().intType().noDefault() //
+                .endRecord();
+        s.addProp(SchemaConstants.TALEND_IS_LOCKED, "true");
+        return s;
+    }
+
+    public static Schema triggerCampaignSchemaFlow() {
+        Schema s = SchemaBuilder.builder().record("triggerCampaign").fields() //
+                .name("leadId")//
+                .prop(SchemaConstants.TALEND_COLUMN_IS_KEY, "true")//
+                .prop(SchemaConstants.TALEND_IS_LOCKED, "true")//
+                .type().nullable().intType().noDefault() //
+                .name(FIELD_CAMPAIGN_ID)//
+                .prop(SchemaConstants.TALEND_COLUMN_IS_KEY, "true")//
+                .prop(SchemaConstants.TALEND_IS_LOCKED, "true")//
+                .type().nullable().intType().noDefault() //
+                .name(FIELD_STATUS).type().nullable().stringType().noDefault()//
                 .endRecord();
         s.addProp(SchemaConstants.TALEND_IS_LOCKED, "true");
         return s;

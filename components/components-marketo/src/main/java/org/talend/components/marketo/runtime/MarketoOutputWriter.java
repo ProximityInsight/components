@@ -18,9 +18,7 @@ import static org.talend.components.marketo.MarketoConstants.FIELD_STATUS;
 import static org.talend.components.marketo.MarketoConstants.FIELD_SUCCESS;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.apache.avro.Schema;
 import org.apache.avro.Schema.Field;
@@ -34,6 +32,7 @@ import org.talend.components.marketo.runtime.client.MarketoRESTClient;
 import org.talend.components.marketo.runtime.client.rest.type.SyncStatus;
 import org.talend.components.marketo.runtime.client.type.MarketoSyncResult;
 import org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties;
+import org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties.CampaignAction;
 import org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties.OutputOperation;
 
 public class MarketoOutputWriter extends MarketoWriter {
@@ -45,12 +44,6 @@ public class MarketoOutputWriter extends MarketoWriter {
     TMarketoOutputProperties properties;
 
     private OutputOperation operation;
-
-    private Boolean dieOnError;
-
-    private int batchSize = 1;
-
-    private List<IndexedRecord> recordsToProcess = new ArrayList<>();
 
     public MarketoOutputWriter(WriteOperation writeOperation, RuntimeContainer runtime) {
         super(writeOperation, runtime);
@@ -67,10 +60,15 @@ public class MarketoOutputWriter extends MarketoWriter {
         //
         operation = properties.outputOperation.getValue();
         dieOnError = properties.dieOnError.getValue();
-        if (operation.equals(OutputOperation.syncMultipleLeads) || operation.equals(OutputOperation.deleteLeads)) {
+        if (operation.equals(OutputOperation.syncMultipleLeads) || operation.equals(OutputOperation.deleteLeads)
+                || operation.equals(OutputOperation.campaign)) {
             batchSize = properties.batchSize.getValue();
         }
         if (operation.equals(OutputOperation.deleteLeads) && !properties.deleteLeadsInBatch.getValue()) {
+            batchSize = 1;
+        }
+        if (operation.equals(OutputOperation.campaign) && properties.campaignAction.getValue().equals(CampaignAction.trigger)
+                && !properties.triggerCampaignForLeadsInBatch.getValue()) {
             batchSize = 1;
         }
     }
@@ -115,6 +113,17 @@ public class MarketoOutputWriter extends MarketoWriter {
         case deleteCustomObjects:
             processResult(((MarketoRESTClient) client).deleteCustomObjects(properties, Arrays.asList(inputRecord)));
             break;
+        case campaign:
+            if (CampaignAction.schedule.equals(properties.campaignAction.getValue())) {
+                // processResult(((MarketoRESTClient) client).scheduleCampaign(properties));
+            } else {
+                recordsToProcess.add(inputRecord);
+                if (recordsToProcess.size() >= batchSize) {
+                    // processResult(((MarketoRESTClient) client).triggerCampaign(properties, recordsToProcess));
+                    recordsToProcess.clear();
+                }
+            }
+            break;
         }
     }
 
@@ -138,7 +147,8 @@ public class MarketoOutputWriter extends MarketoWriter {
             throw new IOException(mktoResult.getErrorsString());
         }
         for (SyncStatus status : mktoResult.getRecords()) {
-            if (Arrays.asList("created", "updated", "deleted").contains(status.getStatus().toLowerCase())) {
+            if (Arrays.asList("created", "updated", "deleted", "scheduled", "triggered")
+                    .contains(status.getStatus().toLowerCase())) {
                 handleSuccess(fillRecord(status, flowSchema));
             } else {
                 if (dieOnError) {
@@ -171,6 +181,8 @@ public class MarketoOutputWriter extends MarketoWriter {
             } else if (f.name().equals(FIELD_ID_REST)) {
                 record.put(f.pos(), status.getId());
             } else if (f.name().equals(FIELD_LEAD_ID)) {
+                record.put(f.pos(), status.getId());
+            } else if (f.name().equals(MarketoConstants.FIELD_CAMPAIGN_ID)) {
                 record.put(f.pos(), status.getId());
             } else if (f.name().equals(FIELD_SUCCESS)) {
                 record.put(f.pos(), Boolean.parseBoolean(status.getStatus()));

@@ -132,6 +132,14 @@ public class MarketoInputReader extends AbstractBoundedReader<IndexedRecord> {
                 }
                 return ((MarketoRESTClient) client).getCustomObjects(properties, position);
             }
+        case Campaign:
+            switch (properties.campaignAction.getValue()) {
+            case get:
+                // return ((MarketoRESTClient) client).getCampaigns(properties, position);
+            case getByID:
+                // return ((MarketoRESTClient) client).getCampaignById(properties);
+            }
+            break;
         }
         throw new IOException(messages.getMessage("error.reader.invalid.operation"));
     }

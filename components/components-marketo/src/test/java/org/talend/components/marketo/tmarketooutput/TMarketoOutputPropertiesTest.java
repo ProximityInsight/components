@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.talend.components.api.component.PropertyPathConnector;
 import org.talend.components.marketo.MarketoConstants;
 import org.talend.components.marketo.tmarketoconnection.TMarketoConnectionProperties.APIMode;
+import org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties.CampaignAction;
 import org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties.OperationType;
 import org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties.OutputOperation;
 import org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties.RESTLookupFields;
@@ -181,5 +182,38 @@ public class TMarketoOutputPropertiesTest {
         assertEquals(MarketoConstants.getEmptySchema(), props.schemaFlow.schema.getValue());
         // assertEquals(MarketoConstants.getDeleteLeadsSchema().getFields(),
         // props.schemaFlow.schema.getValue().getFields());
+    }
+
+    @Test
+    public void testCampaign() throws Exception {
+        props.outputOperation.setValue(OutputOperation.campaign);
+        props.campaignAction.setValue(CampaignAction.schedule);
+        props.afterOutputOperation();
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.campaignAction.getName()).isVisible());
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.campaignId.getName()).isVisible());
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.cloneToProgramName.getName()).isVisible());
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.runAt.getName()).isVisible());
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.campaignTokens.getName()).isVisible());
+        assertFalse(props.getForm(Form.MAIN).getWidget(props.triggerCampaignForLeadsInBatch.getName()).isVisible());
+        assertFalse(props.getForm(Form.MAIN).getWidget(props.batchSize.getName()).isVisible());
+        assertEquals(MarketoConstants.getEmptySchema(), props.schemaInput.schema.getValue());
+        assertEquals(2, props.schemaFlow.schema.getValue().getFields().size());
+        assertEquals(2, props.schemaReject.schema.getValue().getFields().size());
+        props.campaignAction.setValue(CampaignAction.trigger);
+        props.afterOutputOperation();
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.campaignAction.getName()).isVisible());
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.campaignId.getName()).isVisible());
+        assertFalse(props.getForm(Form.MAIN).getWidget(props.cloneToProgramName.getName()).isVisible());
+        assertFalse(props.getForm(Form.MAIN).getWidget(props.runAt.getName()).isVisible());
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.campaignTokens.getName()).isVisible());
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.triggerCampaignForLeadsInBatch.getName()).isVisible());
+        assertFalse(props.getForm(Form.MAIN).getWidget(props.batchSize.getName()).isVisible());
+        props.triggerCampaignForLeadsInBatch.setValue(true);
+        props.afterTriggerCampaignForLeadsInBatch();
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.batchSize.getName()).isVisible());
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.batchSize.getName()).isVisible());
+        assertEquals(MarketoConstants.triggerCampaignSchema(), props.schemaInput.schema.getValue());
+        assertEquals(MarketoConstants.getEmptySchema(), props.schemaFlow.schema.getValue());
+        assertEquals(MarketoConstants.getEmptySchema(), props.schemaReject.schema.getValue());
     }
 }

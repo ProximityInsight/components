@@ -15,6 +15,7 @@ package org.talend.components.marketo.tmarketoinput;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.talend.components.marketo.MarketoConstants.DATETIME_PATTERN_PARAM;
 import static org.talend.components.marketo.MarketoConstants.getRESTSchemaForGetLeadOrGetMultipleLeads;
+import static org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.InputOperation.Campaign;
 import static org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.InputOperation.CustomObject;
 import static org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.InputOperation.getLead;
 import static org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.InputOperation.getLeadActivity;
@@ -64,7 +65,8 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
         getMultipleLeads, // retrieves lead records in batch.
         getLeadActivity, // retrieves the history of activity records for a single lead identified by the provided key.
         getLeadChanges, // checks the changes on Lead data in Marketo DB.
-        CustomObject // CO Operation
+        CustomObject, // CO Operation
+        Campaign // Campaigns
     }
 
     public enum LeadSelector {
@@ -305,6 +307,26 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
 
     public transient PresentationItem fetchCustomObjectSchema = new PresentationItem("fetchCustomObjectSchema", "Fetch schema");
 
+    /**
+     * Campaigns
+     */
+    public enum CampaignAction {
+        get,
+        getByID
+    }
+
+    public Property<CampaignAction> campaignAction = newEnum("campaignAction", CampaignAction.class);
+
+    public Property<Integer> campaignId = newInteger("campaignId").setRequired();
+
+    public Property<String> campaignIds = newString("campaignIds");
+
+    public Property<String> campaignNames = newString("campaignNames");
+
+    public Property<String> programNames = newString("programNames");
+
+    public Property<String> workspaceNames = newString("workspaceNames");
+
     //
     private static final long serialVersionUID = 3335746787979781L;
 
@@ -351,6 +373,10 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
         customObjectNames.setValue("");
         customObjectFilterType.setValue("");
         customObjectFilterValues.setValue("");
+        // Campaigns
+        //
+        campaignAction.setPossibleValues((Object[]) CampaignAction.values());
+        campaignAction.setValue(CampaignAction.get);
         //
         schemaInput.schema.setValue(getRESTSchemaForGetLeadOrGetMultipleLeads());
         beforeMappingInput();
@@ -369,13 +395,20 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
 
         Form mainForm = getForm(Form.MAIN);
         mainForm.addRow(inputOperation);
-        // Custom Objects
+        // Custom Objects & Campaigns
         mainForm.addColumn(customObjectAction);
+        mainForm.addColumn(campaignAction);
         mainForm.addRow(customObjectName);
         mainForm.addColumn(Widget.widget(fetchCustomObjectSchema).setWidgetType(Widget.BUTTON_WIDGET_TYPE).setLongRunning(true));
         mainForm.addRow(customObjectNames);
         mainForm.addRow(customObjectFilterType);
         mainForm.addColumn(customObjectFilterValues);
+        //
+        mainForm.addRow(campaignId);
+        mainForm.addRow(campaignIds);
+        mainForm.addRow(campaignNames);
+        mainForm.addRow(programNames);
+        mainForm.addRow(workspaceNames);
         //
         mainForm.addRow(widget(mappingInput).setWidgetType(Widget.TABLE_WIDGET_TYPE));
         // leadSelector
@@ -450,6 +483,13 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
             form.getWidget(customObjectNames.getName()).setVisible(false);
             form.getWidget(customObjectFilterType.getName()).setVisible(false);
             form.getWidget(customObjectFilterValues.getName()).setVisible(false);
+            // campaigns
+            form.getWidget(campaignAction.getName()).setVisible(false);
+            form.getWidget(campaignId.getName()).setVisible(false);
+            form.getWidget(campaignIds.getName()).setVisible(false);
+            form.getWidget(campaignNames.getName()).setVisible(false);
+            form.getWidget(programNames.getName()).setVisible(false);
+            form.getWidget(workspaceNames.getName()).setVisible(false);
             //
             // enable widgets according params
             //
@@ -548,6 +588,23 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
                     break;
                 }
             }
+            // Campaigns
+            if (inputOperation.getValue().equals(Campaign)) {
+                form.getWidget(mappingInput.getName()).setVisible(false); // don't need mappings for Camp.
+                form.getWidget(campaignAction.getName()).setVisible(true);
+                switch (campaignAction.getValue()) {
+                case get:
+                    form.getWidget(campaignIds.getName()).setVisible(true);
+                    form.getWidget(campaignNames.getName()).setVisible(true);
+                    form.getWidget(programNames.getName()).setVisible(true);
+                    form.getWidget(workspaceNames.getName()).setVisible(true);
+                    form.getWidget(batchSize.getName()).setVisible(true);
+                    break;
+                case getByID:
+                    form.getWidget(campaignId.getName()).setVisible(true);
+                    break;
+                }
+            }
         }
     }
 
@@ -640,6 +697,10 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
         refreshLayout(getForm(Form.MAIN));
     }
 
+    public void afterCampaignAction() {
+        refreshLayout(getForm(Form.MAIN));
+    }
+
     public void updateSchemaRelated() {
         Schema s = null;
         if (isApiSOAP()) {
@@ -679,6 +740,9 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
                     s = MarketoConstants.getCustomObjectRecordSchema();
                     break;
                 }
+                break;
+            case Campaign:
+                s = MarketoConstants.getCampaignSchema();
                 break;
             }
         }

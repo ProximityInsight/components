@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.talend.components.marketo.MarketoConstants;
 import org.talend.components.marketo.MarketoTestBase;
 import org.talend.components.marketo.tmarketoconnection.TMarketoConnectionProperties.APIMode;
+import org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.CampaignAction;
 import org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.CustomObjectAction;
 import org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.IncludeExcludeFieldsREST;
 import org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.IncludeExcludeFieldsSOAP;
@@ -842,5 +843,29 @@ public class TMarketoInputPropertiesTest extends MarketoTestBase {
         props.refreshLayout(props.getForm(Form.ADVANCED));
         assertTrue(props.isApiSOAP());
         assertEquals("getLeadOrGetMultipleLeadsSOAP", props.schemaInput.schema.getValue().getName());
+    }
+
+    @Test
+    public void testCampaign() throws Exception {
+        props.inputOperation.setValue(InputOperation.Campaign);
+        props.campaignAction.setValue(CampaignAction.getByID);
+        props.afterInputOperation();
+        assertEquals(MarketoConstants.getCampaignSchema(), props.schemaInput.schema.getValue());
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.campaignAction.getName()).isVisible());
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.campaignId.getName()).isVisible());
+        assertFalse(props.getForm(Form.MAIN).getWidget(props.campaignIds.getName()).isVisible());
+        assertFalse(props.getForm(Form.MAIN).getWidget(props.campaignNames.getName()).isVisible());
+        assertFalse(props.getForm(Form.MAIN).getWidget(props.programNames.getName()).isVisible());
+        assertFalse(props.getForm(Form.MAIN).getWidget(props.workspaceNames.getName()).isVisible());
+        assertFalse(props.getForm(Form.MAIN).getWidget(props.batchSize.getName()).isVisible());
+        props.campaignAction.setValue(CampaignAction.get);
+        props.afterCampaignAction();
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.campaignAction.getName()).isVisible());
+        assertFalse(props.getForm(Form.MAIN).getWidget(props.campaignId.getName()).isVisible());
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.campaignIds.getName()).isVisible());
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.campaignNames.getName()).isVisible());
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.programNames.getName()).isVisible());
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.workspaceNames.getName()).isVisible());
+        assertTrue(props.getForm(Form.MAIN).getWidget(props.batchSize.getName()).isVisible());
     }
 }
