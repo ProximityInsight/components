@@ -15,7 +15,6 @@ package org.talend.components.marketo.helpers;
 import static org.talend.daikon.properties.property.PropertyFactory.newProperty;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,8 +56,6 @@ public class TokenTable extends ComponentPropertiesImpl {
         super.setupProperties();
         tokenName.setTaggedValue(ADD_QUOTES, true);
         tokenValue.setTaggedValue(ADD_QUOTES, true);
-        tokenName.setPossibleValues(Collections.singletonList("{{my.token}}"));
-        tokenValue.setPossibleValues(Collections.singletonList("myvalue"));
     }
 
     public Map<String, String> getTokens() {

@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.components.marketo.tmarketooutput;
 
-import static org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties.CampaignAction.schedule;
-import static org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties.CampaignAction.trigger;
-import static org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties.OutputOperation.campaign;
 import static org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties.OutputOperation.deleteCustomObjects;
 import static org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties.OutputOperation.deleteLeads;
 import static org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties.OutputOperation.syncCustomObjects;
@@ -23,12 +20,9 @@ import static org.talend.components.marketo.tmarketooutput.TMarketoOutputPropert
 import static org.talend.daikon.properties.presentation.Widget.widget;
 import static org.talend.daikon.properties.property.PropertyFactory.newBoolean;
 import static org.talend.daikon.properties.property.PropertyFactory.newEnum;
-import static org.talend.daikon.properties.property.PropertyFactory.newInteger;
-import static org.talend.daikon.properties.property.PropertyFactory.newProperty;
 import static org.talend.daikon.properties.property.PropertyFactory.newString;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,7 +30,6 @@ import java.util.Set;
 import org.apache.avro.Schema;
 import org.apache.avro.Schema.Field;
 import org.apache.avro.Schema.Type;
-import org.apache.commons.lang3.reflect.TypeLiteral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.talend.components.api.component.ISchemaListener;
@@ -44,7 +37,6 @@ import org.talend.components.api.component.PropertyPathConnector;
 import org.talend.components.marketo.MarketoComponentProperties;
 import org.talend.components.marketo.MarketoConstants;
 import org.talend.components.marketo.helpers.MarketoColumnMappingsTable;
-import org.talend.components.marketo.helpers.TokenTable;
 import org.talend.daikon.avro.SchemaConstants;
 import org.talend.daikon.i18n.GlobalI18N;
 import org.talend.daikon.i18n.I18nMessages;
@@ -61,8 +53,7 @@ public class TMarketoOutputProperties extends MarketoComponentProperties {
         syncMultipleLeads, // This operation requests an insert or update operation for lead records in batch.
         deleteLeads, // REST only
         syncCustomObjects, // REST only
-        deleteCustomObjects, // REST only
-        campaign
+        deleteCustomObjects // REST only
     }
 
     public enum OperationType {
@@ -127,30 +118,6 @@ public class TMarketoOutputProperties extends MarketoComponentProperties {
 
     public Property<Boolean> deleteLeadsInBatch = newBoolean("deleteLeadsInBatch");
 
-    /*
-     * Campaigns
-     */
-    public enum CampaignAction {
-        schedule,
-        trigger
-    }
-
-    public Property<CampaignAction> campaignAction = newEnum("campaignAction", CampaignAction.class);
-
-    public Property<Integer> campaignId = newInteger("campaignId").setRequired();
-
-    public Property<String> cloneToProgramName = newString("cloneToProgramName");
-
-    public Property<Date> runAt = newProperty(DATE_TYPE_LITERAL, "runAt");
-
-    public Property<Boolean> triggerCampaignForLeadsInBatch = newBoolean("triggerCampaignForLeadsInBatch");
-
-    public TokenTable campaignTokens = new TokenTable("campaignTokens");
-
-    private static final TypeLiteral<Date> DATE_TYPE_LITERAL = new TypeLiteral<Date>() {
-        // empty on purpose
-    };
-
     private static final Logger LOG = LoggerFactory.getLogger(TMarketoOutputProperties.class);
 
     private static final I18nMessages messages = GlobalI18N.getI18nMessageProvider()
@@ -190,10 +157,6 @@ public class TMarketoOutputProperties extends MarketoComponentProperties {
         customObjectDedupeBy.setValue("");
         customObjectSyncAction.setPossibleValues((Object[]) CustomObjectSyncAction.values());
         customObjectSyncAction.setValue(CustomObjectSyncAction.createOrUpdate);
-        // Campaigns
-        campaignAction.setPossibleValues((Object[]) CampaignAction.values());
-        campaignAction.setValue(schedule);
-        triggerCampaignForLeadsInBatch.setValue(false);
         //
         schemaInput.schema.setValue(MarketoConstants.getRESTOutputSchemaForSyncLead());
         beforeMappingInput();
@@ -220,13 +183,7 @@ public class TMarketoOutputProperties extends MarketoComponentProperties {
         mainForm.addColumn(customObjectSyncAction);
         mainForm.addColumn(customObjectDedupeBy);
         mainForm.addColumn(customObjectDeleteBy);
-        mainForm.addColumn(campaignAction);
         mainForm.addRow(customObjectName);
-        mainForm.addRow(campaignId);
-        mainForm.addRow(cloneToProgramName);
-        mainForm.addRow(runAt);
-        mainForm.addRow(widget(campaignTokens).setWidgetType(Widget.TABLE_WIDGET_TYPE));
-        mainForm.addRow(triggerCampaignForLeadsInBatch);
         //
         mainForm.addRow(lookupField);
         mainForm.addRow(widget(mappingInput).setWidgetType(Widget.TABLE_WIDGET_TYPE));
@@ -263,13 +220,6 @@ public class TMarketoOutputProperties extends MarketoComponentProperties {
             form.getWidget(customObjectName.getName()).setVisible(false);
             form.getWidget(customObjectDedupeBy.getName()).setVisible(false);
             form.getWidget(customObjectDeleteBy.getName()).setVisible(false);
-            //
-            form.getWidget(campaignAction.getName()).setVisible(false);
-            form.getWidget(campaignId.getName()).setVisible(false);
-            form.getWidget(cloneToProgramName.getName()).setVisible(false);
-            form.getWidget(runAt.getName()).setVisible(false);
-            form.getWidget(campaignTokens.getName()).setVisible(false);
-            form.getWidget(triggerCampaignForLeadsInBatch.getName()).setVisible(false);
             // batchSize
             if (outputOperation.getValue().equals(syncMultipleLeads)) {
                 form.getWidget(deDupeEnabled.getName()).setVisible(true);
@@ -299,16 +249,6 @@ public class TMarketoOutputProperties extends MarketoComponentProperties {
                     form.getWidget(customObjectName.getName()).setVisible(true);
                     form.getWidget(customObjectDeleteBy.getName()).setVisible(true);
                     break;
-                case campaign:
-                    form.getWidget(campaignAction.getName()).setVisible(true);
-                    form.getWidget(campaignId.getName()).setVisible(true);
-                    form.getWidget(cloneToProgramName.getName()).setVisible(schedule.equals(campaignAction.getValue()));
-                    form.getWidget(runAt.getName()).setVisible(schedule.equals(campaignAction.getValue()));
-                    form.getWidget(campaignTokens.getName()).setVisible(true);
-                    form.getWidget(triggerCampaignForLeadsInBatch.getName())
-                            .setVisible(trigger.equals(campaignAction.getValue()));
-                    form.getWidget(batchSize.getName()).setVisible(triggerCampaignForLeadsInBatch.getValue());
-                    break;
                 }
             }
         }
@@ -323,7 +263,6 @@ public class TMarketoOutputProperties extends MarketoComponentProperties {
             case deleteLeads:
             case syncCustomObjects:
             case deleteCustomObjects:
-            case campaign:
                 ValidationResult vr = new ValidationResult();
                 vr.setStatus(Result.ERROR);
                 vr.setMessage(messages.getMessage("validation.error.operation.soap"));
@@ -399,20 +338,16 @@ public class TMarketoOutputProperties extends MarketoComponentProperties {
             s = MarketoConstants.getSOAPOutputSchemaForSyncLead();
             switch (outputOperation.getValue()) {
             case syncLead:
-                s = MarketoConstants.getSOAPOutputSchemaForSyncLead();
-                break;
             case syncMultipleLeads:
-                s = MarketoConstants.getSOAPOutputSchemaForSyncMultipleLeads();
+                s = MarketoConstants.getSOAPOutputSchemaForSyncLead();
                 break;
             }
         } else {
             currentSchemaAPI = API_REST;
             switch (outputOperation.getValue()) {
             case syncLead:
-                s = MarketoConstants.getRESTOutputSchemaForSyncLead();
-                break;
             case syncMultipleLeads:
-                s = MarketoConstants.getRESTOutputSchemaForSyncMultipleLeads();
+                s = MarketoConstants.getRESTOutputSchemaForSyncLead();
                 break;
             case deleteLeads:
                 s = MarketoConstants.getDeleteLeadsSchema();
@@ -420,13 +355,6 @@ public class TMarketoOutputProperties extends MarketoComponentProperties {
             case syncCustomObjects:
             case deleteCustomObjects:
                 s = MarketoConstants.getCustomObjectSyncSchema();
-                break;
-            case campaign:
-                if (campaignAction.getValue().equals(schedule)) {
-                    s = MarketoConstants.getEmptySchema();
-                } else {
-                    s = MarketoConstants.triggerCampaignSchema();
-                }
                 break;
             }
         }
@@ -445,9 +373,7 @@ public class TMarketoOutputProperties extends MarketoComponentProperties {
         // so we set an empty schema for now.
         // seems that it may be resolved : https://jira.talendforge.org/browse/TDI-38603
         if ((outputOperation.getValue().equals(deleteLeads) && deleteLeadsInBatch.getValue())
-                || (outputOperation.getValue().equals(syncMultipleLeads) && batchSize.getValue() > 1)
-                || (campaign.equals(outputOperation.getValue())
-                        && (trigger.equals(campaignAction.getValue()) && triggerCampaignForLeadsInBatch.getValue()))) {
+                || (outputOperation.getValue().equals(syncMultipleLeads) && batchSize.getValue() > 1)) {
             schemaFlow.schema.setValue(MarketoConstants.getEmptySchema());
             schemaReject.schema.setValue(MarketoConstants.getEmptySchema());
             return;
@@ -469,13 +395,6 @@ public class TMarketoOutputProperties extends MarketoComponentProperties {
                 schemaReject.schema.setValue(inputSchema);
             }
             return;
-        }
-        // campaign
-        if (OutputOperation.campaign.equals(outputOperation.getValue())) {
-            f = new Field(MarketoConstants.FIELD_CAMPAIGN_ID, Schema.create(Type.INT), null, (Object) null);
-            f.addProp(SchemaConstants.TALEND_FIELD_GENERATED, "true");
-            f.addProp(SchemaConstants.TALEND_IS_LOCKED, "true");
-            flowFields.add(f);
         }
         // all other cases
         boolean isCustomObject = (outputOperation.getValue().equals(syncCustomObjects)

@@ -21,7 +21,6 @@ import org.talend.components.marketo.tmarketobulkexec.TMarketoBulkExecProperties
 import org.talend.components.marketo.tmarketocampaign.TMarketoCampaignProperties;
 import org.talend.components.marketo.tmarketoconnection.TMarketoConnectionProperties.APIMode;
 import org.talend.components.marketo.tmarketoinput.TMarketoInputProperties;
-import org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.CampaignAction;
 import org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.CustomObjectAction;
 import org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.InputOperation;
 import org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.LeadSelector;
@@ -213,18 +212,6 @@ public class MarketoSource extends MarketoSourceOrSink implements BoundedSource 
                     if (p.customObjectName.getValue().isEmpty()) {
                         vr.setStatus(Result.ERROR);
                         vr.setMessage(messages.getMessage("error.validation.customobject.customobjectname"));
-                        return vr;
-                    }
-                }
-            }
-            /////////////////
-            // Campaign
-            /////////////////
-            if (p.inputOperation.getValue().equals(InputOperation.Campaign)) {
-                if (p.campaignAction.equals(CampaignAction.getByID)) {
-                    if (StringUtils.isEmpty(p.campaignId.getStringValue())) {
-                        vr.setStatus(Result.ERROR);
-                        vr.setMessage(messages.getMessage("error.validation.campaign.byid"));
                         return vr;
                     }
                 }

@@ -188,24 +188,6 @@ public class MarketoConstants {
                 .name("Email").type().nullable().stringType().noDefault() //
                 .name("ForeignSysPersonId").type().nullable().stringType().noDefault() //
                 .name("ForeignSysType").type().nullable().stringType().noDefault() //
-                .name(FIELD_STATUS).prop(SchemaConstants.TALEND_FIELD_GENERATED, "true")
-                .prop(SchemaConstants.TALEND_IS_LOCKED, "true")//
-                .type().nullable().stringType().noDefault() //
-                .endRecord();
-    }
-
-    public static Schema getSOAPOutputSchemaForSyncMultipleLeads() {
-        return SchemaBuilder.builder().record("syncLeadSOAP").fields() //
-                .name("Id").prop(SchemaConstants.TALEND_COLUMN_IS_KEY, "true").type().nullable().intType().noDefault() //
-                .name("Email").type().nullable().stringType().noDefault() //
-                .name("ForeignSysPersonId").type().nullable().stringType().noDefault() //
-                .name("ForeignSysType").type().nullable().stringType().noDefault() //
-                .name(FIELD_STATUS).prop(SchemaConstants.TALEND_FIELD_GENERATED, "true")
-                .prop(SchemaConstants.TALEND_IS_LOCKED, "true")//
-                .type().nullable().stringType().noDefault() //
-                .name(FIELD_ERROR_MSG).prop(SchemaConstants.TALEND_FIELD_GENERATED, "true")
-                .prop(SchemaConstants.TALEND_IS_LOCKED, "true")//
-                .type().nullable().stringType().noDefault() //
                 .endRecord();
     }
 
@@ -215,24 +197,6 @@ public class MarketoConstants {
                 .name("email").type().nullable().stringType().noDefault() //
                 .name("firstName").type().nullable().stringType().noDefault() //
                 .name("lastName").type().nullable().stringType().noDefault() //
-                .name(FIELD_STATUS).prop(SchemaConstants.TALEND_FIELD_GENERATED, "true")
-                .prop(SchemaConstants.TALEND_IS_LOCKED, "true")//
-                .type().nullable().stringType().noDefault() //
-                .endRecord();
-    }
-
-    public static Schema getRESTOutputSchemaForSyncMultipleLeads() {
-        return SchemaBuilder.builder().record("syncLeadREST").fields() //
-                .name("id").prop(SchemaConstants.TALEND_COLUMN_IS_KEY, "true").type().nullable().intType().noDefault() //
-                .name("email").type().nullable().stringType().noDefault() //
-                .name("firstName").type().nullable().stringType().noDefault() //
-                .name("lastName").type().nullable().stringType().noDefault() //
-                .name(FIELD_STATUS).prop(SchemaConstants.TALEND_FIELD_GENERATED, "true")
-                .prop(SchemaConstants.TALEND_IS_LOCKED, "true")//
-                .type().nullable().stringType().noDefault() //
-                .name(FIELD_ERROR_MSG).prop(SchemaConstants.TALEND_FIELD_GENERATED, "true")
-                .prop(SchemaConstants.TALEND_IS_LOCKED, "true")//
-                .type().nullable().stringType().noDefault() //
                 .endRecord();
     }
 

@@ -134,7 +134,6 @@ public class TMarketoCampaignProperties extends MarketoComponentProperties {
             }
             break;
         }
-
         if (form.getName().equals(Form.MAIN)) {
             // first hide everything
             form.getWidget(campaignId.getName()).setVisible(false);

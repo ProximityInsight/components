@@ -65,11 +65,9 @@ public class MarketoCompanyClientTestIT extends MarketoBaseTestIT {
         oprops.connection.clientAccessId.setValue(USERID_REST);
         oprops.connection.secretKey.setValue(SECRETKEY_REST);
         oprops.schemaInput.setupProperties();
-        oprops.campaignTokens.setupProperties();
         oprops.setupProperties();
         oprops.connection.setupLayout();
         oprops.schemaInput.setupLayout();
-        oprops.campaignTokens.setupLayout();
         oprops.setupLayout();
         //
         s = MarketoConstants.getCampaignSchema();

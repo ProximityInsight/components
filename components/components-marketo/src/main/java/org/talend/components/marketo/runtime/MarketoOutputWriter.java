@@ -32,7 +32,6 @@ import org.talend.components.marketo.runtime.client.MarketoRESTClient;
 import org.talend.components.marketo.runtime.client.rest.type.SyncStatus;
 import org.talend.components.marketo.runtime.client.type.MarketoSyncResult;
 import org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties;
-import org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties.CampaignAction;
 import org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties.OutputOperation;
 
 public class MarketoOutputWriter extends MarketoWriter {
@@ -60,15 +59,10 @@ public class MarketoOutputWriter extends MarketoWriter {
         //
         operation = properties.outputOperation.getValue();
         dieOnError = properties.dieOnError.getValue();
-        if (operation.equals(OutputOperation.syncMultipleLeads) || operation.equals(OutputOperation.deleteLeads)
-                || operation.equals(OutputOperation.campaign)) {
+        if (operation.equals(OutputOperation.syncMultipleLeads) || operation.equals(OutputOperation.deleteLeads)) {
             batchSize = properties.batchSize.getValue();
         }
         if (operation.equals(OutputOperation.deleteLeads) && !properties.deleteLeadsInBatch.getValue()) {
-            batchSize = 1;
-        }
-        if (operation.equals(OutputOperation.campaign) && properties.campaignAction.getValue().equals(CampaignAction.trigger)
-                && !properties.triggerCampaignForLeadsInBatch.getValue()) {
             batchSize = 1;
         }
     }
@@ -112,17 +106,6 @@ public class MarketoOutputWriter extends MarketoWriter {
             break;
         case deleteCustomObjects:
             processResult(((MarketoRESTClient) client).deleteCustomObjects(properties, Arrays.asList(inputRecord)));
-            break;
-        case campaign:
-            if (CampaignAction.schedule.equals(properties.campaignAction.getValue())) {
-                // processResult(((MarketoRESTClient) client).scheduleCampaign(properties));
-            } else {
-                recordsToProcess.add(inputRecord);
-                if (recordsToProcess.size() >= batchSize) {
-                    // processResult(((MarketoRESTClient) client).triggerCampaign(properties, recordsToProcess));
-                    recordsToProcess.clear();
-                }
-            }
             break;
         }
     }
@@ -181,8 +164,6 @@ public class MarketoOutputWriter extends MarketoWriter {
             } else if (f.name().equals(FIELD_ID_REST)) {
                 record.put(f.pos(), status.getId());
             } else if (f.name().equals(FIELD_LEAD_ID)) {
-                record.put(f.pos(), status.getId());
-            } else if (f.name().equals(MarketoConstants.FIELD_CAMPAIGN_ID)) {
                 record.put(f.pos(), status.getId());
             } else if (f.name().equals(FIELD_SUCCESS)) {
                 record.put(f.pos(), Boolean.parseBoolean(status.getStatus()));

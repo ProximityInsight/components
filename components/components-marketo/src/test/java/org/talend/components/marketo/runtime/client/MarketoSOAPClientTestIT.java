@@ -639,30 +639,6 @@ public class MarketoSOAPClientTestIT extends MarketoClientTestIT {
     }
 
     @Test
-    public void testAddToListFail() throws Exception {
-        MarketoSource source = new MarketoSource();
-        source.initialize(null, listProperties);
-        MarketoClientService client = source.getClientService(null);
-        //
-        ListOperationParameters parms = new ListOperationParameters();
-        parms.setApiMode(SOAP.name());
-        parms.setListKeyValue(UNDX_TEST_LIST_SMALL);
-        parms.setLeadKeyValue(new String[] { "123456" });
-        MarketoSyncResult result;
-        List<SyncStatus> changes;
-        result = client.addToList(parms);
-        LOG.debug("result = {}.", result);
-        changes = result.getRecords();
-        assertTrue(changes.size() > 0);
-        for (SyncStatus r : changes) {
-            assertNotNull(r);
-            assertNotNull(r.getId());
-            assertTrue(Boolean.parseBoolean(r.getStatus()));
-            LOG.debug("r = {}.", r);
-        }
-    }
-
-    @Test
     public void testIsMemberOfList() throws Exception {
         MarketoSource source = new MarketoSource();
         source.initialize(null, listProperties);

@@ -57,13 +57,6 @@ public class MarketoSink extends MarketoSourceOrSink implements Sink {
                     return vr;
                 }
                 break;
-            case campaign:
-                if (StringUtils.isEmpty(((TMarketoOutputProperties) properties).campaignId.getStringValue())) {
-                    vr.setStatus(Result.ERROR);
-                    vr.setMessage(messages.getMessage("error.validation.campaign.byid"));
-                    return vr;
-                }
-                break;
             }
         }
         // check list operations
