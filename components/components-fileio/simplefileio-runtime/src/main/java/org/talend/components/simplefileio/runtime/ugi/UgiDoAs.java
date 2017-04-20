@@ -101,8 +101,10 @@ public abstract class UgiDoAs implements Serializable {
 
         @Override
         public <T> T doAs(PrivilegedExceptionAction<T> action) throws Exception {
-            if (ugi == null)
+            if (ugi == null) {
                 ugi = UserGroupInformation.loginUserFromKeytabAndReturnUGI(principal, keytab);
+            }
+            ugi.checkTGTAndReloginFromKeytab();
             return ugi.doAs(action);
         }
     }
