@@ -77,6 +77,9 @@
 						<goals>
 							<goal>integration-test</goal>
 						</goals>
+						<configuration>
+						<skip>${really.skip.tests}</skip>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

@@ -80,7 +80,11 @@ public class ComponentsRegistrySetup {
         // read the list of components and register them
         org.springframework.core.env.PropertySource<?> propertySource = env.getPropertySources()
                 .get(TCOMP_COMPONENTS_LIST_RESOURCE_NAME);
-        LOGGER.info("Component list properties" + (propertySource != null ? "" : " not") + " found");
+        if (propertySource != null) {
+            LOGGER.info("Component list properties found");
+        } else {
+            LOGGER.warn("Component list properties not found");
+        }
         if (propertySource != null) {
             String compListStr = (String) propertySource.getProperty(TCOMP_COMPONENTS_LIST_PROP);
             if (compListStr != null) {

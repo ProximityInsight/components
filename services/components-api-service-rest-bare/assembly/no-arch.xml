@@ -8,7 +8,7 @@
     <fileSets>
         <!-- configuration files -->
         <fileSet>
-            <directory>${project.basedir}/src/main/resources</directory>
+            <directory>${project.basedir}/config</directory>
             <outputDirectory>${file.separator}config</outputDirectory>
             <includes>
                 <include>*.*</include>

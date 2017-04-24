@@ -14,6 +14,14 @@
                 <include>*.*</include>
             </includes>
         </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/target/external-resources</directory>
+            <outputDirectory>${file.separator}config</outputDirectory>
+            <includes>
+                <include>*.*</include>
+            </includes>
+        </fileSet>
+        
         <!-- Start up scripts -->
         <fileSet>
             <directory>${project.basedir}/scripts</directory>
@@ -27,7 +35,7 @@
         </fileSet>
         <!-- Maven repo for runtime -->
         <fileSet>
-            <directory>${project.basedir}/target/mvn-repo</directory>
+            <directory>${project.basedir}/target/mvn-repo/.m2</directory>
             <outputDirectory>${file.separator}.m2</outputDirectory>
         </fileSet>
     </fileSets>

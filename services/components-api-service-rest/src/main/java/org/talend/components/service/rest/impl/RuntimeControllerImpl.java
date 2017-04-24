@@ -13,10 +13,10 @@
 
 package org.talend.components.service.rest.impl;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static java.lang.Integer.MAX_VALUE;
-import static java.util.Collections.emptyList;
-import static org.apache.commons.lang3.Validate.notNull;
+import static com.google.common.collect.Lists.*;
+import static java.lang.Integer.*;
+import static java.util.Collections.*;
+import static org.apache.commons.lang3.Validate.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -54,8 +54,6 @@ public class RuntimeControllerImpl implements RuntimesController {
 
     private static final Logger log = LoggerFactory.getLogger(RuntimeControllerImpl.class);
 
-    private static final ClassLoader classLoader = RuntimeControllerImpl.class.getClassLoader();
-
     @Autowired
     private PropertiesHelpers propertiesHelpers;
 
@@ -67,7 +65,8 @@ public class RuntimeControllerImpl implements RuntimesController {
         notNull(definition, "Could not find data store definition of name %s", dataStoreDefinitionName);
         DatastoreProperties properties = propertiesHelpers.propertiesFromDto(propertiesContainer);
 
-        try (SandboxedInstance instance = RuntimeUtil.createRuntimeClass(definition.getRuntimeInfo(properties), classLoader)) {
+        try (SandboxedInstance instance = RuntimeUtil.createRuntimeClass(definition.getRuntimeInfo(properties),
+                properties.getClass().getClassLoader())) {
             DatastoreRuntime<DatastoreProperties> datastoreRuntime = (DatastoreRuntime) instance.getInstance();
             datastoreRuntime.initialize(null, properties);
             Iterable<ValidationResult> healthChecks = datastoreRuntime.doHealthChecks(null);
@@ -115,7 +114,8 @@ public class RuntimeControllerImpl implements RuntimesController {
                 propertiesHelpers.getDataSetDefinition(datasetDefinitionName);
 
         // 3) create the runtime
-        try (SandboxedInstance instance = RuntimeUtil.createRuntimeClass(datasetDefinition.getRuntimeInfo(datasetProperties), classLoader)) {
+        try (SandboxedInstance instance = RuntimeUtil.createRuntimeClass(datasetDefinition.getRuntimeInfo(datasetProperties),
+                datasetProperties.getClass().getClassLoader())) {
             DatasetRuntime<DatasetProperties<DatastoreProperties>> datasetRuntimeInstance = (DatasetRuntime<DatasetProperties<DatastoreProperties>>) instance
                     .getInstance();
 
