@@ -28,13 +28,13 @@ import java.util.jar.JarInputStream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ops4j.pax.url.mvn.ServiceConstants;
-import org.ops4j.pax.url.mvn.internal.Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.talend.components.api.exception.ComponentException;
 import org.talend.components.api.exception.error.ComponentsApiErrorCode;
 import org.talend.daikon.exception.ExceptionContext;
 import org.talend.daikon.exception.TalendRuntimeException;
+import org.talend.daikon.sandbox.MvnUrlParser;
 
 /**
  * this will locate a read the dependencies file for a given artifact.
@@ -246,7 +246,7 @@ public class DependenciesReader {
         String protocol = jarMvnUrl != null ? jarMvnUrl.getProtocol() : null;
         if (ServiceConstants.PROTOCOL.equals(protocol)) {
             try {
-                Parser mvnUrlParser = new Parser(jarMvnUrl.getPath());
+                MvnUrlParser mvnUrlParser = new MvnUrlParser(jarMvnUrl.getPath());
                 return computeDependenciesFilePath(mvnUrlParser.getGroup(), mvnUrlParser.getArtifact());
             } catch (MalformedURLException e) {// should never happend cause the paramter is already a URL
                 throw TalendRuntimeException.createUnexpectedException(e);

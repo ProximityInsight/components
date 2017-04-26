@@ -14,3 +14,4 @@ there is a standard **settings.xml** file located in the _config_ folder that ca
 ## artifact produced
 * a zip file which contains the service the start scripts and the minimum configuration files to launch it without any components. (see above to configure it with some components)
 * a jar (classifier:config) that contains startup scripts and configuration files to be used by other modules. 
+* a docker image when the maven build is launch with a `-Pdocker` option. 
