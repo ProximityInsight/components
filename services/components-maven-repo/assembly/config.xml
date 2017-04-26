@@ -15,9 +15,10 @@
                 <include>*.*</include>
             </includes>
         </fileSet>
+        <!-- component list file -->
         <fileSet>
-            <directory>${project.basedir}/scripts</directory>
-            <outputDirectory>${file.separator}</outputDirectory>
+            <directory>${project.build.directory}/config</directory>
+            <outputDirectory>${file.separator}/config</outputDirectory>
             <includes>
                 <include>*.*</include>
             </includes>

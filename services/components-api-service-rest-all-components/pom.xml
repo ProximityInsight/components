@@ -120,19 +120,18 @@
 									<groupId>org.talend.components</groupId>
 									<artifactId>components-maven-repo</artifactId>
 									<type>zip</type>
-									<overWrite>false</overWrite>
 									<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
 								</artifactItem>
 								<!-- import the components list -->
 								<artifactItem>
 									<groupId>org.talend.components</groupId>
 									<artifactId>components-maven-repo</artifactId>
-									<type>jar</type>
-									<overWrite>false</overWrite>
+									<classifier>config</classifier>
+									<type>zip</type>
 									<outputDirectory>${project.build.directory}/external-resources</outputDirectory>
 									<excludes>META-INF/**</excludes>
 								</artifactItem>
-								<!-- import the service configuration files -->
+								<!-- import the service scripts and configuration files -->
 								<artifactItem>
 									<groupId>org.talend.components</groupId>
 									<artifactId>components-api-service-rest-bare</artifactId>

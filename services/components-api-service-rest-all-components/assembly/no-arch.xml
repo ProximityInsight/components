@@ -8,15 +8,8 @@
     <fileSets>
         <!-- configuration files -->
         <fileSet>
-            <directory>${project.basedir}/src/main/resources</directory>
-            <outputDirectory>${file.separator}config</outputDirectory>
-            <includes>
-                <include>*.*</include>
-            </includes>
-        </fileSet>
-        <fileSet>
-            <directory>${project.basedir}/target/external-resources</directory>
-            <outputDirectory>${file.separator}config</outputDirectory>
+            <directory>${project.basedir}/target/external-resources/config</directory>
+            <outputDirectory>${file.separator}/config</outputDirectory>
             <includes>
                 <include>*.*</include>
             </includes>
@@ -24,7 +17,7 @@
         
         <!-- Start up scripts -->
         <fileSet>
-            <directory>${project.basedir}/scripts</directory>
+            <directory>${project.basedir}/target/external-resources</directory>
             <outputDirectory>/</outputDirectory>
             <filtered>true</filtered>
             <fileMode>0755</fileMode>

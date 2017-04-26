@@ -8,7 +8,7 @@
 	<groupId>org.talend.components</groupId>
 	<artifactId>components-api-service-rest-bare</artifactId>
 	<version>0.18.0-SNAPSHOT</version>
-
+	<packaging>pom</packaging>
 	<name>Component REST API Bare service</name>
 
 	<dependencies>
@@ -34,21 +34,6 @@
 	</dependencies>
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
-
-					<execution>
-						<id>default-jar</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<!-- bind to a non existing phase to prevent jar creation -->
-						<phase>never</phase>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

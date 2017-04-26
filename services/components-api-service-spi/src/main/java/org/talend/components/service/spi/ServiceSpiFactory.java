@@ -12,8 +12,10 @@
 // ============================================================================
 package org.talend.components.service.spi;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.List;
 import java.util.ServiceLoader;
 import java.util.Set;
 
@@ -84,7 +86,17 @@ public class ServiceSpiFactory {
         Set<URL> dependenciesUrl = new HashSet<>(componentUrls.length * 3);// assuming at least 3 deps
         for (URL compURL : componentUrls) {
             try{
-                dependenciesUrl.addAll(DependenciesReader.extractDependenciesFromJarMvnUrl(compURL));
+                List<URL> componentDepsURLs = DependenciesReader.extractDependenciesFromJarMvnUrl(compURL);
+                // resolve all url, this means they can be downloaded from a remote maven repo too.
+                LOG.info("resolving dependencies for [" + compURL + "]");
+                try {
+                    for (URL depsURL : componentDepsURLs) {
+                        depsURL.openConnection();
+                    }
+                } catch (IOException e) {
+                    LOG.error("Error when resolving dependencies for [" + compURL + "]:" + e);
+                }
+                dependenciesUrl.addAll(componentDepsURLs);
             }catch(ComponentException ce){
                 LOG.error("Failed to load component from URL[" + compURL + "] because :" + ce.getMessage());
             }

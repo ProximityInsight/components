@@ -12,7 +12,7 @@
 
 
 	<artifactId>components-maven-repo</artifactId>
-
+	<packaging>pom</packaging>
 	<name>Maven repository with components for REST service</name>
 
 	<properties>
@@ -32,8 +32,8 @@
 	<dependencies>
 		<!-- list of embedded components -->
 		<dependency>
-			<!-- because common-oauth depends on jetty 9.2 (for java 7 compliance)
- 				and it's not compatible with spring-boot 1.4.1, the jetty needs to be excluded. --> 
+			<!-- because common-oauth depends on jetty 9.2 (for java 7 compliance) 
+				and it's not compatible with spring-boot 1.4.1, the jetty needs to be excluded. -->
 			<groupId>org.talend.components</groupId>
 			<artifactId>components-common-oauth</artifactId>
 			<version>${project.version}</version>
@@ -107,9 +107,9 @@
 			<artifactId>components-api-full-example</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<!-- the runtime artifact are added as test so that the global maven build
+		<!-- the runtime artifact are added as test so that the global maven build 
 			builds them before -->
-		<!-- they are used to create the maven repo for runtime hence not real
+		<!-- they are used to create the maven repo for runtime hence not real 
 			dependencies for the REST service -->
 		<dependency>
 			<groupId>org.talend.components</groupId>
@@ -236,27 +236,10 @@
 
 	<build>
 		<plugins>
-		<!-- We cannot skip the jar generation cause the maven-invoker-plugin requires the current jar being present -->
-<!-- 			<plugin> -->
-			<!-- prevent a jar from being generated -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 				<artifactId>maven-jar-plugin</artifactId> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<id>default-jar</id> -->
-<!-- 						<goals> -->
-<!-- 							<goal>jar</goal> -->
-<!-- 						</goals> -->
-<!-- 						bind to a non existing phase to prevent jar creation -->
-<!-- 						<phase>never</phase> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 			</plugin> -->
-		
 			<plugin>
-				<!-- this will create the mave repository for the application runtime
+				<!-- this will create the mave repository for the application runtime 
 					resolution -->
-				<!-- you must specify the runtime artifacts if the are not part of dependencies
+				<!-- you must specify the runtime artifacts if the are not part of dependencies 
 					of this pom. -->
 				<artifactId>maven-invoker-plugin</artifactId>
 				<version>2.0.0-TALEND</version>
@@ -313,16 +296,29 @@
 							<appendAssemblyId>false</appendAssemblyId>
 						</configuration>
 					</execution>
+					<execution>
+						<id>config-package</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>assembly/config.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>
-			<!-- create a class path with all the compile scope dependencies of this pom using the local maven repository -->
+				<!-- create a class path with all the compile scope dependencies of this 
+					pom using the local maven repository -->
 				<groupId>com.github.veithen.alta</groupId>
 				<artifactId>alta-maven-plugin</artifactId>
 				<version>0.5.2-TALEND</version>
 				<executions>
 					<execution>
-					    <id>generate-components-list</id>
+						<id>generate-components-list</id>
 						<goals>
 							<goal>generate-properties</goal>
 						</goals>
@@ -330,17 +326,77 @@
 							<name>components.list</name>
 							<value>mvn:%groupId%/%artifactId%/%version%/%type%%classifier?/@:%</value>
 							<separator>,</separator>
-							<dependencySet>
-							<include>
-							</include>
-								<scope>compile</scope>
-							</dependencySet>
+							<artifacts>
+								<artifact>
+									<groupId>org.talend.components</groupId>
+									<artifactId>components-jdbc-definition</artifactId>
+									<version>${project.version}</version>
+								</artifact>
+
+								<artifact>
+									<groupId>org.talend.components</groupId>
+									<artifactId>simplefileio-definition</artifactId>
+									<version>${project.version}</version>
+								</artifact>
+
+								<artifact>
+									<groupId>org.talend.components</groupId>
+									<artifactId>components-salesforce-definition</artifactId>
+									<version>${project.version}</version>
+								</artifact>
+
+								<artifact>
+									<groupId>org.talend.components</groupId>
+									<artifactId>localio-definition</artifactId>
+									<version>${project.version}</version>
+								</artifact>
+								<artifact>
+									<groupId>org.talend.components</groupId>
+									<artifactId>jms-definition</artifactId>
+									<version>${project.version}</version>
+								</artifact>
+								<artifact>
+									<groupId>org.talend.components</groupId>
+									<artifactId>kafka-definition</artifactId>
+									<version>${project.version}</version>
+								</artifact>
+								<artifact>
+									<groupId>org.talend.components</groupId>
+									<artifactId>elasticsearch-definition</artifactId>
+									<version>${project.version}</version>
+								</artifact>
+								<artifact>
+									<groupId>org.talend.components</groupId>
+									<artifactId>components-jira</artifactId>
+									<version>${project.version}</version>
+								</artifact>
+								<artifact>
+									<groupId>org.talend.components</groupId>
+									<artifactId>processing-definition</artifactId>
+									<version>${project.version}</version>
+								</artifact>
+								<artifact>
+									<groupId>org.talend.components</groupId>
+									<artifactId>bigquery-definition</artifactId>
+									<version>${project.version}</version>
+								</artifact>
+								<artifact>
+									<groupId>org.talend.components</groupId>
+									<artifactId>pubsub-definition</artifactId>
+									<version>${project.version}</version>
+								</artifact>
+								<artifact>
+									<groupId>org.talend.components</groupId>
+									<artifactId>components-api-full-example</artifactId>
+									<version>${project.version}</version>
+								</artifact>
+							</artifacts>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 			<plugin>
-			<!-- this computes the tcom service classpath using maven artifacts -->
+				<!-- this computes the tcom service classpath using maven artifacts -->
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.8</version>
 				<executions>
@@ -354,11 +410,14 @@
 						<configuration>
 							<exportAntProperties>true</exportAntProperties>
 							<tasks>
-                                <echo file="${project.build.outputDirectory}${file.separator}components.list" message="tcomp.components.list=mvn:org.talend.components/bigquery-definition/${project.version}/jar,mvn:org.talend.components/components-api-full-example/${project.version}/jar,mvn:org.talend.components/components-jdbc-definition/${project.version}/jar,mvn:org.talend.components/components-jira/${project.version}/jar,mvn:org.talend.components/components-salesforce-definition/${project.version}/jar,mvn:org.talend.components/elasticsearch-definition/${project.version}/jar,mvn:org.talend.components/jms-definition/${project.version}/jar,mvn:org.talend.components/kafka-definition/${project.version}/jar,mvn:org.talend.components/localio-definition/${project.version}/jar,mvn:org.talend.components/processing-definition/${project.version}/jar,mvn:org.talend.components/pubsub-definition/${project.version}/jar,mvn:org.talend.components/simplefileio-definition/${project.version}/jar" />
+								<echo message="tcomp.components.list=${components.list}" />
+								<echo
+									file="${project.build.directory}${file.separator}config${file.separator}components.list"
+									message="tcomp.components.list=${components.list}" />
 							</tasks>
 						</configuration>
 					</execution>
-					
+
 				</executions>
 			</plugin>
 		</plugins>
