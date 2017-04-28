@@ -141,6 +141,12 @@
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.talend.daikon</groupId>
+			<artifactId>daikon-spring</artifactId>
+			<version>${daikon.version}</version>
+			<scope>test</scope>
+		</dependency>
 		<!-- Drivers needed for embedded database -->
 		<dependency>
 			<groupId>org.apache.derby</groupId>
