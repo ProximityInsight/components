@@ -28,6 +28,7 @@ import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.IndexedRecord;
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,6 +98,25 @@ public class SalesforceInputReaderTestIT extends SalesforceTestBase {
     @Test
     public void testInputBulkQueryDynamic() throws Throwable {
         runInputTest(true, true);
+    }
+
+    @Test
+    public void testBulkApiWithPkChunking() throws Throwable {
+        int count = 200;
+        TSalesforceInputProperties properties = createTSalesforceInputProperties(false, true);
+        properties.pkChunking.setValue(true);
+        properties.chunkSize.setValue(100);
+        properties.manualQuery.setValue(false);
+        String random = createNewRandom();
+        List<IndexedRecord> outputRows = makeRows(random, count, true);
+        outputRows = writeRows(random, properties, outputRows);
+        try {
+            List<IndexedRecord> readRows = readRows(properties);
+            LOGGER.info("Read rows count - {}", readRows.size());
+            Assert.assertTrue(readRows.size() >= outputRows.size());
+        } finally {
+            deleteRows(outputRows, properties);
+        }
     }
 
     protected TSalesforceInputProperties createTSalesforceInputProperties(boolean emptySchema, boolean isBulkQury)

@@ -682,4 +682,8 @@ public class SalesforceBulkRuntime {
         return resultId;
     }
 
+    public boolean hasNextResultId() {
+        return queryResultIDs != null && queryResultIDs.hasNext();
+    }
+
 }
