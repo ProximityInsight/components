@@ -26,7 +26,6 @@ import org.talend.components.salesforce.tsalesforceinput.TSalesforceInputPropert
 import org.talend.daikon.avro.AvroUtils;
 
 import com.sforce.async.AsyncApiException;
-import com.sforce.async.BulkConnection;
 import com.sforce.ws.ConnectionException;
 
 public class SalesforceBulkQueryInputReader extends SalesforceReader<IndexedRecord> {
@@ -49,12 +48,10 @@ public class SalesforceBulkQueryInputReader extends SalesforceReader<IndexedReco
     public boolean start() throws IOException {
         try {
             if (bulkRuntime == null) {
-                BulkConnection bulkConnection = ((SalesforceSource) getCurrentSource()).connect(container).bulkConnection;
+                bulkRuntime = new SalesforceBulkRuntime(
+                        ((SalesforceSource) getCurrentSource()).connect(container).bulkConnection);
                 if (((TSalesforceInputProperties) properties).pkChunking.getValue()) {
-                    bulkRuntime = new SalesforceBulkRuntime(bulkConnection,
-                            ((TSalesforceInputProperties) properties).chunkSize.getValue());
-                } else {
-                    bulkRuntime = new SalesforceBulkRuntime(bulkConnection);
+                    bulkRuntime.setChunkSize(((TSalesforceInputProperties) properties).chunkSize.getValue());
                 }
             }
             executeSalesforceBulkQuery();

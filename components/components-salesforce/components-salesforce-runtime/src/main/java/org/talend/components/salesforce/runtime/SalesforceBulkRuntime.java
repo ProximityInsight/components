@@ -114,18 +114,22 @@ public class SalesforceBulkRuntime {
         }
     }
 
-    public SalesforceBulkRuntime(BulkConnection bulkConnection, int chunkSize) throws IOException {
-        this(bulkConnection);
+    public BulkConnection getBulkConnection() {
+        return bulkConnection;
+    }
+
+    /**
+     * Set value for chunk size. Maximum value is 250_000.
+     *
+     * @param chunkSize - value for batches size.
+     */
+    public void setChunkSize(int chunkSize) {
         if (chunkSize > TSalesforceInputProperties.MAX_CHUNK_SIZE) {
             LOGGER.warn("Chunk size was set to max value - 250000.");
             this.chunkSize = TSalesforceInputProperties.MAX_CHUNK_SIZE;
         } else {
             this.chunkSize = chunkSize;
         }
-    }
-
-    public BulkConnection getBulkConnection() {
-        return bulkConnection;
     }
 
     private void setBulkOperation(String sObjectType, OutputAction userOperation, String externalIdFieldName,
@@ -326,7 +330,6 @@ public class SalesforceBulkRuntime {
         FileInputStream tmpInputStream = new FileInputStream(tmpFile);
         try {
             BatchInfo batchInfo = createBatchFromStream(job, tmpInputStream);
-            // System.out.println(batchInfo);
             batchInfos.add(batchInfo);
         } finally {
             tmpInputStream.close();
@@ -367,7 +370,6 @@ public class SalesforceBulkRuntime {
                 Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
             }
-            // System.out.println("Awaiting results..." + incomplete.size());
             sleepTime = awaitTime;
             BatchInfo[] statusList = getBatchInfoList(job.getId()).getBatchInfo();
             for (BatchInfo b : statusList) {
@@ -468,6 +470,9 @@ public class SalesforceBulkRuntime {
             LOGGER.debug("Awaiting " + secToWait + " seconds for results ...\n" + info);
             Thread.sleep(secToWait * 1000);
             info = getBatchInfo(job.getId(), info.getId());
+
+            //From SF developers documentation: first batch info must contain NotProcessed state for primary key chunking.
+            // for simple bulk query should return Completed
             if (info.getState() == BatchStateEnum.Completed
                     || (BatchStateEnum.NotProcessed == info.getState() && 0 < chunkSize)) {
                 break;
@@ -506,6 +511,7 @@ public class SalesforceBulkRuntime {
     protected JobInfo createJob(JobInfo job) throws AsyncApiException, ConnectionException {
         try {
             if (0 != chunkSize) {
+                // Enabling PK chunking by setting header and chunk size.
                 bulkConnection.addHeader(PK_CHUNKING_HEADER_NAME, CHUNK_SIZE_PROPERTY_NAME + chunkSize);
             }
             return bulkConnection.createJob(job);
@@ -517,6 +523,7 @@ public class SalesforceBulkRuntime {
             throw sfException;
         } finally {
             if (0 != chunkSize) {
+                // Need to disable PK chunking after job was created.
                 bulkConnection.addHeader(PK_CHUNKING_HEADER_NAME, Boolean.FALSE.toString());
             }
         }
@@ -626,8 +633,10 @@ public class SalesforceBulkRuntime {
     }
 
     /**
+     * Retrieve resultId(-s) from job batches info.
+     * Results will be retrieved only from completed batches.
      *
-     * @param info
+     * @param info - batch info from created job.
      * @throws AsyncApiException
      * @throws ConnectionException
      */
@@ -637,6 +646,7 @@ public class SalesforceBulkRuntime {
             QueryResultList list = getQueryResultList(job.getId(), info.getId());
             queryResultIDs = new HashSet<String>(Arrays.asList(list.getResult())).iterator();
             this.batchInfoList = Collections.singletonList(info);
+            return;
         }
 
         /*
