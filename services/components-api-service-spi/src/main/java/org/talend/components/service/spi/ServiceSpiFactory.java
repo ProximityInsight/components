@@ -86,7 +86,7 @@ public class ServiceSpiFactory {
         Set<URL> dependenciesUrl = new HashSet<>(componentUrls.length * 3);// assuming at least 3 deps
         for (URL compURL : componentUrls) {
             try{
-                List<URL> componentDepsURLs = DependenciesReader.extractDependenciesFromJarMvnUrl(compURL);
+                List<URL> componentDepsURLs = DependenciesReader.extractDependencies(compURL);
                 // resolve all url, this means they can be downloaded from a remote maven repo too.
                 LOG.info("resolving dependencies for [" + compURL + "]");
                 try {

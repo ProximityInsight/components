@@ -12,8 +12,12 @@
 // ============================================================================
 package org.talend.components.api.component.runtime;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,7 +34,9 @@ import java.util.zip.ZipOutputStream;
 import org.hamcrest.Matcher;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.ops4j.pax.url.mvn.MavenResolver;
 import org.ops4j.pax.url.mvn.MavenResolvers;
 import org.slf4j.Logger;
@@ -41,7 +47,8 @@ import shaded.org.apache.commons.io.IOUtils;
 
 public class DependenciesReaderTest {
 
-    private static final Matcher<Iterable<? extends String>> CONTAINS_IN_ANY_ORDER_DEPS = containsInAnyOrder("mvn:org.apache.maven/maven-core/3.3.3/jar", //
+    private static final Matcher<Iterable<? extends String>> CONTAINS_IN_ANY_ORDER_DEPS = containsInAnyOrder(
+            "mvn:org.apache.maven/maven-core/3.3.3/jar", //
             "mvn:org.eclipse.sisu/org.eclipse.sisu.plexus/0.0.0.M2a/jar", //
             "mvn:org.apache.maven/maven-artifact/3.3.3/jar", //
             "mvn:org.eclipse.aether/aether-transport-file/1.0.0.v20140518/jar", //
@@ -57,6 +64,9 @@ public class DependenciesReaderTest {
     private static final String TEST_VERSION = "1.0";
 
     private static String tempMavenFilePath;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @BeforeClass
     public static void init() throws IOException {
@@ -120,8 +130,7 @@ public class DependenciesReaderTest {
         try (InputStream resourceAsStream = this.getClass().getResourceAsStream("dep.txt")) {
             Set<String> deps = dependenciesReader.parseDependencies(resourceAsStream);
             assertEquals(5, deps.size());
-            assertThat(deps,
-                    CONTAINS_IN_ANY_ORDER_DEPS);
+            assertThat(deps, CONTAINS_IN_ANY_ORDER_DEPS);
         }
     }
 
@@ -137,35 +146,33 @@ public class DependenciesReaderTest {
         DependenciesReader dependenciesReader = new DependenciesReader("org.talend.components.api.test", "test-components");
         Set<String> deps = dependenciesReader.getDependencies(this.getClass().getClassLoader());
         assertEquals(5, deps.size());
-        assertThat(deps,
-                CONTAINS_IN_ANY_ORDER_DEPS);
+        assertThat(deps, CONTAINS_IN_ANY_ORDER_DEPS);
     }
 
     @Test
     public void testComputePathToDepsFromMvnUrl() throws MalformedURLException {
         String computePathToDepsFromMvnUrl = DependenciesReader
-                .computePathToDepsFromMvnUrl(new URL("mvn:org.talend.components/file-input/0.1.0.SNAPSHOT/jar"));
+                .computeDependenciesFilePath(new URL("mvn:org.talend.components/file-input/0.1.0.SNAPSHOT/jar"));
         assertThat("META-INF/maven/org.talend.components/file-input/dependencies.txt", equalTo(computePathToDepsFromMvnUrl));
+
+        thrown.expect(IllegalArgumentException.class);
         computePathToDepsFromMvnUrl = DependenciesReader
-                .computePathToDepsFromMvnUrl(new URL("file:org.talend.components/file-input/0.1.0.SNAPSHOT/jar"));
-        assertThat(computePathToDepsFromMvnUrl, nullValue());
+                .computeDependenciesFilePath(new URL("file:org.talend.components/file-input/0.1.0.SNAPSHOT/jar"));
     }
 
     @Test
     public void testextractDepenenciesFromJarMvnUrl() throws MalformedURLException {
         List<URL> deps = DependenciesReader
-                .extractDependenciesFromJarMvnUrl(
-                        new URL("mvn:" + TEST_GROUPID + "/" + TEST_ARTEFACTID + "/" + TEST_VERSION + "/jar/jar"));
+                .extractDependencies(new URL("mvn:" + TEST_GROUPID + "/" + TEST_ARTEFACTID + "/" + TEST_VERSION + "/jar/jar"));
         List<String> urlStrs = new ArrayList<>(deps.size());
         for (URL url : deps) {
             urlStrs.add(url.toString());
         }
-        assertThat(urlStrs,
-                CONTAINS_IN_ANY_ORDER_DEPS);
+        assertThat(urlStrs, CONTAINS_IN_ANY_ORDER_DEPS);
         // checks for wrong url protocol
-        assertThat(DependenciesReader.extractDependenciesFromJarMvnUrl(new URL("file:foo")), is(empty()));
+        assertThat(DependenciesReader.extractDependencies(new URL("file:foo")), is(empty()));
         // checks for null url
-        assertThat(DependenciesReader.extractDependenciesFromJarMvnUrl(null), is(empty()));
+        assertThat(DependenciesReader.extractDependencies(null), is(empty()));
     }
 
 }

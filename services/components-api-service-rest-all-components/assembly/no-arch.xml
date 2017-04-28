@@ -9,7 +9,7 @@
         <!-- configuration files -->
         <fileSet>
             <directory>${project.basedir}/target/external-resources/config</directory>
-            <outputDirectory>${file.separator}/config</outputDirectory>
+            <outputDirectory>${file.separator}config</outputDirectory>
             <includes>
                 <include>*.*</include>
             </includes>

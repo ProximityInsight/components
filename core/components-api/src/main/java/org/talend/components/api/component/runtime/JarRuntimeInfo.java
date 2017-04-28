@@ -79,7 +79,7 @@ public class JarRuntimeInfo implements RuntimeInfo {
 
     @Override
     public List<URL> getMavenUrlDependencies() {
-        return DependenciesReader.extractDepenenciesFromJarUrl(jarUrl, depTxtPath);
+        return DependenciesReader.extractDepenencies(jarUrl, depTxtPath);
     }
 
     @Override
