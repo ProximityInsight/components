@@ -26,6 +26,7 @@ import org.talend.components.salesforce.tsalesforceinput.TSalesforceInputPropert
 import org.talend.daikon.avro.AvroUtils;
 
 import com.sforce.async.AsyncApiException;
+import com.sforce.async.BulkConnection;
 import com.sforce.ws.ConnectionException;
 
 public class SalesforceBulkQueryInputReader extends SalesforceReader<IndexedRecord> {
@@ -48,8 +49,13 @@ public class SalesforceBulkQueryInputReader extends SalesforceReader<IndexedReco
     public boolean start() throws IOException {
         try {
             if (bulkRuntime == null) {
-                bulkRuntime = new SalesforceBulkRuntime(
-                        ((SalesforceSource) getCurrentSource()).connect(container).bulkConnection);
+                BulkConnection bulkConnection = ((SalesforceSource) getCurrentSource()).connect(container).bulkConnection;
+                if (((TSalesforceInputProperties) properties).pkChunking.getValue()) {
+                    bulkRuntime = new SalesforceBulkRuntime(bulkConnection,
+                            ((TSalesforceInputProperties) properties).chunkSize.getValue());
+                } else {
+                    bulkRuntime = new SalesforceBulkRuntime(bulkConnection);
+                }
             }
             executeSalesforceBulkQuery();
             bulkResultSet = bulkRuntime.getQueryResultSet(bulkRuntime.nextResultId());
@@ -92,13 +98,22 @@ public class SalesforceBulkQueryInputReader extends SalesforceReader<IndexedReco
         return true;
     }
 
+
+    @Override
+    public void close() throws IOException {
+        try {
+            bulkRuntime.closeJob();
+        } catch (AsyncApiException | ConnectionException e) {
+            throw new IOException(e);
+        }
+    }
+
     public BulkResult getCurrentRecord() throws NoSuchElementException {
         return currentRecord;
     }
 
     protected void executeSalesforceBulkQuery() throws IOException, ConnectionException {
         String queryText = getQueryString(properties);
-        bulkRuntime = new SalesforceBulkRuntime(((SalesforceSource) getCurrentSource()).connect(container).bulkConnection);
         try {
             bulkRuntime.doBulkQuery(getModuleName(), queryText);
         } catch (AsyncApiException | InterruptedException | ConnectionException e) {

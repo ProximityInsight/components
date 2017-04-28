@@ -28,7 +28,6 @@ import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.IndexedRecord;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,7 +94,6 @@ public class SalesforceInputReaderTestIT extends SalesforceTestBase {
         runInputTest(false, true);
     }
 
-    @Ignore("Bulk query doesn't support")
     @Test
     public void testInputBulkQueryDynamic() throws Throwable {
         runInputTest(true, true);
@@ -238,7 +236,6 @@ public class SalesforceInputReaderTestIT extends SalesforceTestBase {
     /**
      * This for basic connection manual query with dynamic
      */
-    @Ignore("Should be activated after TDI-38263")
     @Test
     public void testBulkManualQueryDynamic() throws Throwable {
         testManualQueryDynamic(true);
