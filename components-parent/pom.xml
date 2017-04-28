@@ -227,12 +227,6 @@
 				<artifactId>components-api-service-rest</artifactId>
 				<version>${components.version}</version>
 				<classifier>lib</classifier>
-				<exclusions>
-					<exclusion>
-						<groupId>ch.qos.logback</groupId>
-						<artifactId>logback-classic</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.talend.components</groupId>
