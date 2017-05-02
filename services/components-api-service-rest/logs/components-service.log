@@ -1485,3 +1485,373 @@ org.talend.daikon.exception.TalendRuntimeException: UNEXPECTED_ARGUMENT:{argumen
 2017-05-02 15:20:53.829  INFO 3743 --- [Thread-27] org.eclipse.jetty.server.session         : Stopped scavenging
 2017-05-02 15:20:53.833  INFO 3743 --- [Thread-27] application                              : Destroying Spring FrameworkServlet 'dispatcherServlet'
 2017-05-02 15:20:53.833  INFO 3743 --- [Thread-27] o.e.jetty.server.handler.ContextHandler  : Stopped o.s.b.c.e.j.JettyEmbeddedWebAppContext@d512c1{/,file:///private/var/folders/tw/n6nbgr697gl_xng9rknnlhgr0000gn/T/jetty-docbase.7806159407922051295.0/,UNAVAILABLE}
+2017-05-02 17:53:38.248  INFO 12525 --- [main] s.c.a.AnnotationConfigApplicationContext : Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@5fe1ce85: startup date [Tue May 02 17:53:38 CEST 2017]; root of context hierarchy
+2017-05-02 17:53:38.458  INFO 12525 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2017-05-02 17:53:38.493  INFO 12525 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'configurationPropertiesRebinderAutoConfiguration' of type [class org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$a982f30f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2017-05-02 17:53:38.774  INFO 12525 --- [main] o.t.c.s.rest.DefinitionsControllerTest   : No active profile set, falling back to default profiles: default
+2017-05-02 17:53:38.777  INFO 12525 --- [main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@5f84abe8: startup date [Tue May 02 17:53:38 CEST 2017]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@5fe1ce85
+2017-05-02 17:53:39.638  INFO 12525 --- [main] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'getComponentService' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=componentsTestRegistrySetup; factoryMethodName=getComponentService; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/talend/components/service/spring/ComponentsTestRegistrySetup.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=componentsRegistrySetup; factoryMethodName=getComponentService; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/talend/components/service/rest/configuration/ComponentsRegistrySetup.class]]
+2017-05-02 17:53:39.639  INFO 12525 --- [main] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'getDefintionRegistryService' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=componentsTestRegistrySetup; factoryMethodName=getDefintionRegistryService; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/talend/components/service/spring/ComponentsTestRegistrySetup.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=componentsRegistrySetup; factoryMethodName=getDefintionRegistryService; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/talend/components/service/rest/configuration/ComponentsRegistrySetup.class]]
+2017-05-02 17:53:39.834  INFO 12525 --- [main] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'retryTemplate' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration$RetryAutoConfiguration; factoryMethodName=retryTemplate; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/cloud/client/loadbalancer/LoadBalancerAutoConfiguration$RetryAutoConfiguration.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.cloud.netflix.feign.ribbon.FeignRibbonClientAutoConfiguration; factoryMethodName=retryTemplate; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/cloud/netflix/feign/ribbon/FeignRibbonClientAutoConfiguration.class]]
+2017-05-02 17:53:39.858  WARN 12525 --- [main] o.s.c.a.ConfigurationClassPostProcessor  : Cannot enhance @Configuration bean definition 'refreshScope' since its singleton instance has been created too early. The typical cause is a non-static @Bean method with a BeanDefinitionRegistryPostProcessor return type: Consider declaring such methods as 'static'.
+2017-05-02 17:53:40.006  INFO 12525 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=bc02e3bb-cf25-346f-b48a-bf7040b24a8a
+2017-05-02 17:53:40.163  INFO 12525 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2017-05-02 17:53:40.190  INFO 12525 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration' of type [class org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2017-05-02 17:53:40.201  INFO 12525 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'validator' of type [class org.springframework.validation.beanvalidation.LocalValidatorFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2017-05-02 17:53:40.315  INFO 12525 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [class org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$8d68f012] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2017-05-02 17:53:40.542  INFO 12525 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'localServiceFinder' of type [class org.talend.daikon.client.configuration.LocalServiceFinder] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2017-05-02 17:53:40.548  INFO 12525 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'remoteServiceFinder' of type [class org.talend.daikon.client.configuration.RemoteServiceFinder] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2017-05-02 17:53:40.556  INFO 12525 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'clientServiceConfiguration' of type [class org.talend.daikon.client.configuration.ClientServiceConfiguration$$EnhancerBySpringCGLIB$$eaf56236] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2017-05-02 17:53:40.561  INFO 12525 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'clientService' of type [class org.talend.daikon.client.ClientService] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2017-05-02 17:53:40.573  INFO 12525 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration' of type [class org.springframework.cloud.autoconfigure.ConfigurationPropertiesRebinderAutoConfiguration$$EnhancerBySpringCGLIB$$a982f30f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2017-05-02 17:53:40.795  INFO 12525 --- [main] org.eclipse.jetty.util.log               : Logging initialized @4164ms to org.eclipse.jetty.util.log.Slf4jLog
+2017-05-02 17:53:40.959  INFO 12525 --- [main] e.j.JettyEmbeddedServletContainerFactory : Server initialized with port: 0
+2017-05-02 17:53:40.961  INFO 12525 --- [main] org.eclipse.jetty.server.Server          : jetty-9.4.1.v20170120
+2017-05-02 17:53:41.070  INFO 12525 --- [main] org.eclipse.jetty.server.session         : DefaultSessionIdManager workerName=node0
+2017-05-02 17:53:41.070  INFO 12525 --- [main] org.eclipse.jetty.server.session         : No SessionScavenger set, using defaults
+2017-05-02 17:53:41.072  INFO 12525 --- [main] org.eclipse.jetty.server.session         : Scavenging every 600000ms
+2017-05-02 17:53:41.078  INFO 12525 --- [main] application                              : Initializing Spring embedded WebApplicationContext
+2017-05-02 17:53:41.078  INFO 12525 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2301 ms
+2017-05-02 17:53:41.375  INFO 12525 --- [main] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]
+2017-05-02 17:53:41.377  INFO 12525 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'metricsFilter' to: [/*]
+2017-05-02 17:53:41.378  INFO 12525 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2017-05-02 17:53:41.378  INFO 12525 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2017-05-02 17:53:41.378  INFO 12525 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2017-05-02 17:53:41.378  INFO 12525 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2017-05-02 17:53:41.378  INFO 12525 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'webRequestLoggingFilter' to: [/*]
+2017-05-02 17:53:41.378  INFO 12525 --- [main] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'applicationContextIdFilter' to: [/*]
+2017-05-02 17:53:41.600  INFO 12525 --- [main] o.e.jetty.server.handler.ContextHandler  : Started o.s.b.c.e.j.JettyEmbeddedWebAppContext@16f34376{/,file:///private/var/folders/tw/n6nbgr697gl_xng9rknnlhgr0000gn/T/jetty-docbase.4885378545760122672.0/,AVAILABLE}
+2017-05-02 17:53:41.601  INFO 12525 --- [main] org.eclipse.jetty.server.Server          : Started @4971ms
+2017-05-02 17:53:42.162  INFO 12525 --- [main] o.t.c.s.rest.configuration.I18NSetup     : Activated i18n messages (org.talend.components.service.rest.i18n.I18nMessageProviderSpring@543ac221).
+2017-05-02 17:53:42.175  WARN 12525 --- [main] o.t.c.s.r.c.ComponentsRegistrySetup      : Component list properties not found
+2017-05-02 17:53:42.193  INFO 12525 --- [main] o.t.c.a.s.common.DefinitionRegistry      : Talend Definition registered :TestComponent
+2017-05-02 17:53:42.193  INFO 12525 --- [main] o.t.c.a.s.common.DefinitionRegistry      : Talend Definition registered :zewizard
+2017-05-02 17:53:42.200  INFO 12525 --- [main] o.t.c.a.s.common.DefinitionRegistry      : Talend Definition registered :tJDBCCloseNew
+2017-05-02 17:53:42.200  INFO 12525 --- [main] o.t.c.a.s.common.DefinitionRegistry      : Talend Definition registered :tJDBCCommitNew
+2017-05-02 17:53:42.200  INFO 12525 --- [main] o.t.c.a.s.common.DefinitionRegistry      : Talend Definition registered :tJDBCConnectionNew
+2017-05-02 17:53:42.200  INFO 12525 --- [main] o.t.c.a.s.common.DefinitionRegistry      : Talend Definition registered :tJDBCInputNew
+2017-05-02 17:53:42.200  INFO 12525 --- [main] o.t.c.a.s.common.DefinitionRegistry      : Talend Definition registered :tJDBCOutputNew
+2017-05-02 17:53:42.200  INFO 12525 --- [main] o.t.c.a.s.common.DefinitionRegistry      : Talend Definition registered :tJDBCRollbackNew
+2017-05-02 17:53:42.200  INFO 12525 --- [main] o.t.c.a.s.common.DefinitionRegistry      : Talend Definition registered :tJDBCRowNew
+2017-05-02 17:53:42.200  INFO 12525 --- [main] o.t.c.a.s.common.DefinitionRegistry      : Talend Definition registered :tDataPrepDBInput
+2017-05-02 17:53:42.200  INFO 12525 --- [main] o.t.c.a.s.common.DefinitionRegistry      : Talend Definition registered :JDBC
+2017-05-02 17:53:42.200  INFO 12525 --- [main] o.t.c.a.s.common.DefinitionRegistry      : Talend Definition registered :JDBCDatastore
+2017-05-02 17:53:42.200  INFO 12525 --- [main] o.t.c.a.s.common.DefinitionRegistry      : Talend Definition registered :JDBCDataset
+2017-05-02 17:53:42.201  INFO 12525 --- [main] o.t.c.a.s.common.DefinitionRegistry      : Talend Definition registered :DataPrepDBInput
+2017-05-02 17:53:42.201  INFO 12525 --- [main] o.t.c.a.s.common.DefinitionRegistry      : Talend Definition registered :JdbcOutput
+2017-05-02 17:53:42.555  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@5f84abe8: startup date [Tue May 02 17:53:38 CEST 2017]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@5fe1ce85
+2017-05-02 17:53:42.561  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Detected @InitBinder methods in controllersConfiguration
+2017-05-02 17:53:42.698  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/names],methods=[GET],produces=[application/json]}" onto public java.util.Set<java.lang.String> org.talend.components.service.rest.impl.ComponentControllerImpl.getAllComponentNames()
+2017-05-02 17:53:42.699  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/definitions],methods=[GET],produces=[application/json]}" onto public java.util.Set<org.talend.components.api.component.ComponentDefinition> org.talend.components.service.rest.impl.ComponentControllerImpl.getAllComponents()
+2017-05-02 17:53:42.699  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/properties/{name}],methods=[GET],produces=[application/json]}" onto public org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody org.talend.components.service.rest.impl.ComponentControllerImpl.getComponentProperties(java.lang.String,java.lang.String)
+2017-05-02 17:53:42.699  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/wizardForProperties/{repositoryLocation}],methods=[POST],produces=[application/json]}" onto public java.util.List<org.talend.components.api.wizard.ComponentWizard> org.talend.components.service.rest.impl.ComponentControllerImpl.getComponentWizardsForProperties(org.talend.components.api.properties.ComponentProperties,java.lang.String)
+2017-05-02 17:53:42.699  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/possibleComponents],methods=[POST],produces=[application/json]}" onto public java.util.List<org.talend.components.api.component.ComponentDefinition> org.talend.components.service.rest.impl.ComponentControllerImpl.getPossibleComponents(org.talend.components.api.properties.ComponentProperties...) throws java.lang.Throwable
+2017-05-02 17:53:42.699  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/definition/{name}],methods=[GET],produces=[application/json]}" onto public org.talend.components.api.component.ComponentDefinition org.talend.components.service.rest.impl.ComponentControllerImpl.getComponentDefinition(java.lang.String)
+2017-05-02 17:53:42.700  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/wizard/{name}/{repositoryLocation}],methods=[GET],produces=[application/json]}" onto public org.talend.components.api.wizard.ComponentWizard org.talend.components.service.rest.impl.ComponentControllerImpl.getComponentWizard(java.lang.String,java.lang.String)
+2017-05-02 17:53:42.700  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/makeFormCancelable],methods=[POST],produces=[application/json]}" onto public org.talend.daikon.properties.Properties org.talend.components.service.rest.impl.ComponentControllerImpl.makeFormCancelable(org.talend.daikon.properties.Properties,java.lang.String)
+2017-05-02 17:53:42.700  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/commitFormValues],methods=[POST],produces=[application/json]}" onto public org.talend.daikon.properties.Properties org.talend.components.service.rest.impl.ComponentControllerImpl.cancelFormValues(org.talend.daikon.properties.Properties,java.lang.String)
+2017-05-02 17:53:42.701  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/properties/{propName}/validate],methods=[POST],produces=[application/json]}" onto public org.talend.daikon.properties.Properties org.talend.components.service.rest.impl.ComponentControllerImpl.validateProperty(java.lang.String,org.talend.daikon.properties.Properties) throws java.lang.Throwable
+2017-05-02 17:53:42.701  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/properties/{propName}/beforeActivate],methods=[POST],produces=[application/json]}" onto public org.talend.daikon.properties.Properties org.talend.components.service.rest.impl.ComponentControllerImpl.beforePropertyActivate(java.lang.String,org.talend.daikon.properties.Properties) throws java.lang.Throwable
+2017-05-02 17:53:42.701  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/properties/{propName}/beforeRender],methods=[POST],produces=[application/json]}" onto public org.talend.daikon.properties.Properties org.talend.components.service.rest.impl.ComponentControllerImpl.beforePropertyPresent(java.lang.String,org.talend.daikon.properties.Properties) throws java.lang.Throwable
+2017-05-02 17:53:42.701  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/properties/{propName}/after],methods=[POST],produces=[application/json]}" onto public org.talend.daikon.properties.Properties org.talend.components.service.rest.impl.ComponentControllerImpl.afterProperty(java.lang.String,org.talend.daikon.properties.Properties) throws java.lang.Throwable
+2017-05-02 17:53:42.701  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/properties/beforeFormPresent/{formName}],methods=[POST],produces=[application/json]}" onto public org.talend.daikon.properties.Properties org.talend.components.service.rest.impl.ComponentControllerImpl.beforeFormPresent(java.lang.String,org.talend.daikon.properties.Properties) throws java.lang.Throwable
+2017-05-02 17:53:42.702  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/properties/afterFormNext/{formName}],methods=[POST],produces=[application/json]}" onto public org.talend.daikon.properties.Properties org.talend.components.service.rest.impl.ComponentControllerImpl.afterFormNext(java.lang.String,org.talend.daikon.properties.Properties) throws java.lang.Throwable
+2017-05-02 17:53:42.702  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/properties/afterFormBack/{formName}],methods=[POST],produces=[application/json]}" onto public org.talend.daikon.properties.Properties org.talend.components.service.rest.impl.ComponentControllerImpl.afterFormBack(java.lang.String,org.talend.daikon.properties.Properties) throws java.lang.Throwable
+2017-05-02 17:53:42.702  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/properties/afterFormFinish/{formName}],methods=[POST],produces=[application/json]}" onto public org.talend.daikon.properties.Properties org.talend.components.service.rest.impl.ComponentControllerImpl.afterFormFinish(java.lang.String,org.talend.daikon.properties.Properties) throws java.lang.Throwable
+2017-05-02 17:53:42.702  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/wizards/{name}/icon/{type}],methods=[GET],produces=[image/png]}" onto public void org.talend.components.service.rest.impl.ComponentControllerImpl.getWizardImageRest(java.lang.String,org.talend.components.api.wizard.WizardImageType,javax.servlet.http.HttpServletResponse)
+2017-05-02 17:53:42.702  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/components/icon/{name}],methods=[GET],produces=[image/png]}" onto public void org.talend.components.service.rest.impl.ComponentControllerImpl.getComponentsImageRest(java.lang.String,org.talend.components.api.component.ComponentImageType,javax.servlet.http.HttpServletResponse)
+2017-05-02 17:53:42.703  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/definitions/{type}],methods=[GET]}" onto public java.util.List<org.talend.components.service.rest.dto.DefinitionDTO> org.talend.components.service.rest.impl.DefinitionsControllerImpl.listDefinitions(org.talend.components.service.rest.DefinitionType,java.lang.String)
+2017-05-02 17:53:42.704  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/definitions/components],methods=[GET]}" onto public java.util.List<org.talend.components.service.rest.dto.DefinitionDTO> org.talend.components.service.rest.impl.DefinitionsControllerImpl.listComponentDefinitions(org.talend.components.service.rest.dto.ConnectorTypology,org.talend.components.api.component.runtime.ExecutionEngine)
+2017-05-02 17:53:42.708  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/properties/{definitionName}],methods=[GET],produces=[application/json;charset=UTF-8]}" onto public java.lang.String org.talend.components.service.rest.impl.PropertiesControllerImpl.getProperties(java.lang.String,java.lang.String)
+2017-05-02 17:53:42.708  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/properties/{definitionName}/connectors],methods=[GET],produces=[application/json;charset=UTF-8]}" onto public org.springframework.http.ResponseEntity<java.util.List<org.talend.components.service.rest.dto.ConnectorDto>> org.talend.components.service.rest.impl.PropertiesControllerImpl.getConnectors(java.lang.String)
+2017-05-02 17:53:42.708  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/properties/{definitionName}/icon/{imageType}],methods=[GET],produces=[image/png || image/svg+xml]}" onto public org.springframework.http.ResponseEntity<org.springframework.core.io.InputStreamResource> org.talend.components.service.rest.impl.PropertiesControllerImpl.getIcon(java.lang.String,org.talend.daikon.definition.DefinitionImageType)
+2017-05-02 17:53:42.708  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/properties/{definitionName}/validate],methods=[POST],consumes=[application/json;charset=UTF-8]}" onto public org.springframework.http.ResponseEntity<org.talend.components.service.rest.dto.ValidationResultsDto> org.talend.components.service.rest.impl.PropertiesControllerImpl.validateProperties(org.talend.components.service.rest.dto.PropertiesDto)
+2017-05-02 17:53:42.709  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/properties/{definition}/{trigger}/{property}],methods=[POST],consumes=[application/json;charset=UTF-8],produces=[application/json;charset=UTF-8]}" onto public org.springframework.http.ResponseEntity<java.lang.String> org.talend.components.service.rest.impl.PropertiesControllerImpl.triggerOnProperty(java.lang.String,org.talend.daikon.serialize.jsonschema.PropertyTrigger,java.lang.String,java.lang.String,org.talend.components.service.rest.dto.PropertiesDto)
+2017-05-02 17:53:42.709  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/properties/{definitionName}/dataset],methods=[POST],consumes=[application/json;charset=UTF-8],produces=[application/json;charset=UTF-8]}" onto public java.lang.String org.talend.components.service.rest.impl.PropertiesControllerImpl.getDatasetProperties(java.lang.String,java.lang.String,org.talend.components.service.rest.dto.PropertiesDto)
+2017-05-02 17:53:42.711  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/runtimes/{datasetDefinitionName}/schema],methods=[POST],consumes=[application/json;charset=UTF-8],produces=[application/json;charset=UTF-8]}" onto public java.lang.String org.talend.components.service.rest.impl.RuntimeControllerImpl.getDatasetSchema(java.lang.String,org.talend.components.service.rest.dto.PropertiesDto) throws java.io.IOException
+2017-05-02 17:53:42.711  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/runtimes/{datasetDefinitionName}/data],methods=[POST],consumes=[application/json;charset=UTF-8],produces=[application/json;charset=UTF-8 || avro/json || application/x-avro-json || application/avro-json]}" onto public java.lang.Void org.talend.components.service.rest.impl.RuntimeControllerImpl.getDatasetData(java.lang.String,org.talend.components.service.rest.dto.PropertiesDto,java.lang.Integer,java.lang.Integer,java.io.OutputStream)
+2017-05-02 17:53:42.712  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/runtimes/{dataStoreDefinitionName}],methods=[POST],consumes=[application/json;charset=UTF-8]}" onto public org.springframework.http.ResponseEntity<org.talend.components.service.rest.dto.ValidationResultsDto> org.talend.components.service.rest.impl.RuntimeControllerImpl.validateDataStoreConnection(java.lang.String,org.talend.components.service.rest.dto.PropertiesDto)
+2017-05-02 17:53:42.712  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/runtimes/{datasetDefinitionName}/data],methods=[POST],consumes=[application/json;charset=UTF-8],produces=[avro/binary || application/x-avro-binary || application/avro-binary]}" onto public java.lang.Void org.talend.components.service.rest.impl.RuntimeControllerImpl.getDatasetDataAsBinary(java.lang.String,org.talend.components.service.rest.dto.PropertiesDto,java.lang.Integer,java.lang.Integer,java.io.OutputStream)
+2017-05-02 17:53:42.713  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/docs]}" onto java.lang.String org.talend.daikon.documentation.DocumentationController.enunciateDocumentation()
+2017-05-02 17:53:42.714  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2017-05-02 17:53:42.715  INFO 12525 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2017-05-02 17:53:42.778  INFO 12525 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-05-02 17:53:42.779  INFO 12525 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-05-02 17:53:42.797  INFO 12525 --- [main] .m.m.a.ExceptionHandlerExceptionResolver : Detected @ExceptionHandler methods in controllersConfiguration
+2017-05-02 17:53:42.832  INFO 12525 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2017-05-02 17:53:43.550  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/beans || /beans.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2017-05-02 17:53:43.551  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/heapdump || /heapdump.json],methods=[GET],produces=[application/octet-stream]}" onto public void org.springframework.boot.actuate.endpoint.mvc.HeapdumpMvcEndpoint.invoke(boolean,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.io.IOException,javax.servlet.ServletException
+2017-05-02 17:53:43.551  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/mappings || /mappings.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2017-05-02 17:53:43.552  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/refresh || /refresh.json],methods=[POST]}" onto public java.lang.Object org.springframework.cloud.endpoint.GenericPostableMvcEndpoint.invoke()
+2017-05-02 17:53:43.552  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/metrics/{name:.*}],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.MetricsMvcEndpoint.value(java.lang.String)
+2017-05-02 17:53:43.552  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/metrics || /metrics.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2017-05-02 17:53:43.553  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/pause || /pause.json],methods=[POST]}" onto public java.lang.Object org.springframework.cloud.endpoint.GenericPostableMvcEndpoint.invoke()
+2017-05-02 17:53:43.553  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/info || /info.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2017-05-02 17:53:43.554  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/autoconfig || /autoconfig.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2017-05-02 17:53:43.554  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/configprops || /configprops.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2017-05-02 17:53:43.555  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/resume || /resume.json],methods=[POST]}" onto public java.lang.Object org.springframework.cloud.endpoint.GenericPostableMvcEndpoint.invoke()
+2017-05-02 17:53:43.555  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/health || /health.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.HealthMvcEndpoint.invoke(javax.servlet.http.HttpServletRequest)
+2017-05-02 17:53:43.556  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/archaius || /archaius.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2017-05-02 17:53:43.556  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/env/{name:.*}],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EnvironmentMvcEndpoint.value(java.lang.String)
+2017-05-02 17:53:43.556  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/env || /env.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2017-05-02 17:53:43.557  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/env],methods=[POST]}" onto public java.lang.Object org.springframework.cloud.context.environment.EnvironmentManagerMvcEndpoint.value(java.util.Map<java.lang.String, java.lang.String>)
+2017-05-02 17:53:43.557  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/env/reset],methods=[POST]}" onto public java.util.Map<java.lang.String, java.lang.Object> org.springframework.cloud.context.environment.EnvironmentManagerMvcEndpoint.reset()
+2017-05-02 17:53:43.558  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/auditevents || /auditevents.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public org.springframework.http.ResponseEntity<?> org.springframework.boot.actuate.endpoint.mvc.AuditEventsMvcEndpoint.findByPrincipalAndAfterAndType(java.lang.String,java.util.Date,java.lang.String)
+2017-05-02 17:53:43.558  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/dump || /dump.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2017-05-02 17:53:43.560  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/restart || /restart.json],methods=[POST]}" onto public java.lang.Object org.springframework.cloud.context.restart.RestartMvcEndpoint.invoke()
+2017-05-02 17:53:43.560  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/trace || /trace.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2017-05-02 17:53:43.561  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/loggers/{name:.*}],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.LoggersMvcEndpoint.get(java.lang.String)
+2017-05-02 17:53:43.561  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/loggers/{name:.*}],methods=[POST],consumes=[application/vnd.spring-boot.actuator.v1+json || application/json],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.LoggersMvcEndpoint.set(java.lang.String,java.util.Map<java.lang.String, java.lang.String>)
+2017-05-02 17:53:43.561  INFO 12525 --- [main] o.s.b.a.e.mvc.EndpointHandlerMapping     : Mapped "{[/loggers || /loggers.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2017-05-02 17:53:43.957  WARN 12525 --- [main] o.s.c.n.a.ArchaiusAutoConfiguration      : No spring.application.name found, defaulting to 'application'
+2017-05-02 17:53:43.963  WARN 12525 --- [main] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2017-05-02 17:53:43.963  INFO 12525 --- [main] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2017-05-02 17:53:43.972  WARN 12525 --- [main] c.n.c.sources.URLConfigurationSource     : No URLs will be polled as dynamic configuration sources.
+2017-05-02 17:53:43.972  INFO 12525 --- [main] c.n.c.sources.URLConfigurationSource     : To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+2017-05-02 17:53:44.256  INFO 12525 --- [main] application                              : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2017-05-02 17:53:44.256  INFO 12525 --- [main] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
+2017-05-02 17:53:44.282  INFO 12525 --- [main] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 26 ms
+2017-05-02 17:53:44.307  INFO 12525 --- [main] o.e.jetty.server.AbstractConnector       : Started ServerConnector@489c15e2{HTTP/1.1,[http/1.1]}{0.0.0.0:52192}
+2017-05-02 17:53:44.308  INFO 12525 --- [main] .s.b.c.e.j.JettyEmbeddedServletContainer : Jetty started on port(s) 52192 (http/1.1)
+2017-05-02 17:53:44.311  INFO 12525 --- [main] o.t.c.s.rest.DefinitionsControllerTest   : Started DefinitionsControllerTest in 6.743 seconds (JVM running for 7.681)
+2017-05-02 17:53:45.847  INFO 12525 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [org.talend.components.service.rest.impl.PropertiesControllerImplTest], using SpringBootContextLoader
+2017-05-02 17:53:45.848  INFO 12525 --- [main] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [org.talend.components.service.rest.impl.PropertiesControllerImplTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2017-05-02 17:53:45.855  INFO 12525 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
+2017-05-02 17:53:45.857  INFO 12525 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@68bef3df, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@6aeb769d, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@51f412e6, org.springframework.test.context.support.DirtiesContextTestExecutionListener@7234db3, org.springframework.test.context.transaction.TransactionalTestExecutionListener@189c6683, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@2972b493, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@58e0f079, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@45b37003, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@3e60be48, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@20a533b, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@5db6083b, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@3db48e6]
+2017-05-02 17:53:46.028  INFO 12525 --- [qtp839907439-42] o.t.c.s.r.impl.ControllersConfiguration  : An exception reached the API
+
+java.lang.NullPointerException: Could not find data store definition of name toto
+	at org.apache.commons.lang3.Validate.notNull(Validate.java:222)
+	at org.talend.components.service.rest.impl.PropertiesControllerImpl.getDatasetProperties(PropertiesControllerImpl.java:196)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:133)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:116)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:827)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:738)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:85)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:897)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:970)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:872)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:707)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:846)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:841)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1634)
+	at org.eclipse.jetty.websocket.server.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:206)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.boot.web.filter.ApplicationContextHeaderFilter.doFilterInternal(ApplicationContextHeaderFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.boot.actuate.trace.WebRequestTraceFilter.doFilterInternal(WebRequestTraceFilter.java:108)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:105)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:81)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:197)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.boot.actuate.autoconfigure.MetricsFilter.doFilterInternal(MetricsFilter.java:106)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:541)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:143)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:190)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1584)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:188)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1228)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:168)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:481)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1553)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:166)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1130)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at org.eclipse.jetty.server.Server.handle(Server.java:564)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:320)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:279)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:112)
+	at org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:124)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:672)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:590)
+	at java.lang.Thread.run(Thread.java:745)
+
+2017-05-02 17:53:46.412  INFO 12525 --- [qtp839907439-40] o.t.c.s.r.impl.ControllersConfiguration  : A mapping exception reached the API
+
+org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'org.talend.daikon.serialize.jsonschema.PropertyTrigger'; nested exception is java.lang.IllegalArgumentException: No enum constant org.talend.daikon.serialize.jsonschema.PropertyTrigger.TOTO
+	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.resolveArgument(AbstractNamedValueMethodArgumentResolver.java:128)
+	at org.talend.daikon.service.InheritedAnnotationArgumentResolver.resolveArgument(InheritedAnnotationArgumentResolver.java:54)
+	at org.springframework.web.method.support.HandlerMethodArgumentResolverComposite.resolveArgument(HandlerMethodArgumentResolverComposite.java:121)
+	at org.springframework.web.method.support.InvocableHandlerMethod.getMethodArgumentValues(InvocableHandlerMethod.java:158)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:128)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:116)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:827)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:738)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:85)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:897)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:970)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:872)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:707)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:846)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:841)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1634)
+	at org.eclipse.jetty.websocket.server.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:206)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.boot.web.filter.ApplicationContextHeaderFilter.doFilterInternal(ApplicationContextHeaderFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.boot.actuate.trace.WebRequestTraceFilter.doFilterInternal(WebRequestTraceFilter.java:108)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:105)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:81)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:197)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.boot.actuate.autoconfigure.MetricsFilter.doFilterInternal(MetricsFilter.java:106)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:541)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:143)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:190)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1584)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:188)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1228)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:168)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:481)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1553)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:166)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1130)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at org.eclipse.jetty.server.Server.handle(Server.java:564)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:320)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:279)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:112)
+	at org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:124)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:672)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:590)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.IllegalArgumentException: No enum constant org.talend.daikon.serialize.jsonschema.PropertyTrigger.TOTO
+	at java.lang.Enum.valueOf(Enum.java:238)
+	at org.talend.daikon.serialize.jsonschema.PropertyTrigger.valueOf(PropertyTrigger.java:18)
+	at org.talend.components.service.rest.impl.ControllersConfiguration$1.setAsText(ControllersConfiguration.java:90)
+	at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:468)
+	at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:441)
+	at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:199)
+	at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:108)
+	at org.springframework.beans.TypeConverterSupport.doConvert(TypeConverterSupport.java:64)
+	at org.springframework.beans.TypeConverterSupport.convertIfNecessary(TypeConverterSupport.java:47)
+	at org.springframework.validation.DataBinder.convertIfNecessary(DataBinder.java:713)
+	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.resolveArgument(AbstractNamedValueMethodArgumentResolver.java:120)
+	... 64 common frames omitted
+
+2017-05-02 17:53:46.515  INFO 12525 --- [qtp839907439-46] o.t.c.s.r.impl.ControllersConfiguration  : A Talend exception reached the API
+
+org.talend.daikon.exception.TalendRuntimeException: UNEXPECTED_ARGUMENT:{argument=definitionClass, value=org.talend.components.service.rest.mock.MockDatasetDefinition}
+	at org.talend.daikon.exception.TalendRuntimeException$TalendRuntimeExceptionBuilder.create(TalendRuntimeException.java:304)
+	at org.talend.daikon.exception.TalendRuntimeException$TalendRuntimeExceptionBuilder.set(TalendRuntimeException.java:272)
+	at org.talend.components.service.rest.impl.PropertiesControllerImpl.getConnectors(PropertiesControllerImpl.java:145)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:133)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:116)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:827)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:738)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:85)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:897)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:970)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:861)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:687)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:846)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:841)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1634)
+	at org.eclipse.jetty.websocket.server.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:206)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.boot.web.filter.ApplicationContextHeaderFilter.doFilterInternal(ApplicationContextHeaderFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.boot.actuate.trace.WebRequestTraceFilter.doFilterInternal(WebRequestTraceFilter.java:108)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:105)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:81)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:197)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.springframework.boot.actuate.autoconfigure.MetricsFilter.doFilterInternal(MetricsFilter.java:106)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.eclipse.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1621)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:541)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:143)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:548)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:190)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1584)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:188)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1228)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:168)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:481)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1553)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:166)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1130)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at org.eclipse.jetty.server.Server.handle(Server.java:564)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:320)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:251)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:279)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:112)
+	at org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:124)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:672)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:590)
+	at java.lang.Thread.run(Thread.java:745)
+
+2017-05-02 17:53:46.520  INFO 12525 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [org.talend.components.service.rest.impl.RuntimeControllerImplTest], using SpringBootContextLoader
+2017-05-02 17:53:46.521  INFO 12525 --- [main] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [org.talend.components.service.rest.impl.RuntimeControllerImplTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2017-05-02 17:53:46.527  INFO 12525 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
+2017-05-02 17:53:46.530  INFO 12525 --- [main] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@4faccb34, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@2cb4e4b1, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@6e3552b0, org.springframework.test.context.support.DirtiesContextTestExecutionListener@6971c6b7, org.springframework.test.context.transaction.TransactionalTestExecutionListener@402d45c6, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@4b37b01e, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@f53db1a, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@6870e039, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@42599b84, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@34986491, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@2582e213, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@4a1cafb2]
+2017-05-02 17:53:46.788  WARN 12525 --- [main] SpecificationImpl$RestAssuredHttpBuilder : Could not parse content-type: Response does not have a content-type header
+2017-05-02 17:53:46.851  INFO 12525 --- [Thread-27] ationConfigEmbeddedWebApplicationContext : Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@5f84abe8: startup date [Tue May 02 17:53:38 CEST 2017]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@5fe1ce85
+2017-05-02 17:53:46.863  INFO 12525 --- [Thread-27] o.e.jetty.server.AbstractConnector       : Stopped ServerConnector@489c15e2{HTTP/1.1,[http/1.1]}{0.0.0.0:0}
+2017-05-02 17:53:46.864  INFO 12525 --- [Thread-27] org.eclipse.jetty.server.session         : Stopped scavenging
+2017-05-02 17:53:46.868  INFO 12525 --- [Thread-27] application                              : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2017-05-02 17:53:46.869  INFO 12525 --- [Thread-27] o.e.jetty.server.handler.ContextHandler  : Stopped o.s.b.c.e.j.JettyEmbeddedWebAppContext@16f34376{/,file:///private/var/folders/tw/n6nbgr697gl_xng9rknnlhgr0000gn/T/jetty-docbase.4885378545760122672.0/,UNAVAILABLE}
