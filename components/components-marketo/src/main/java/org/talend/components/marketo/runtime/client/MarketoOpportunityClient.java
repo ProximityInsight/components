@@ -31,9 +31,12 @@ import org.talend.components.marketo.runtime.client.type.MarketoRecordResult;
 import org.talend.components.marketo.runtime.client.type.MarketoSyncResult;
 import org.talend.components.marketo.tmarketoconnection.TMarketoConnectionProperties;
 import org.talend.components.marketo.tmarketoinput.TMarketoInputProperties;
+import org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.InputOperation;
 import org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties;
+import org.talend.components.marketo.tmarketooutput.TMarketoOutputProperties.OutputOperation;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 /**
@@ -61,9 +64,13 @@ public class MarketoOpportunityClient extends MarketoCompanyClient {
      * @return
      */
     public MarketoRecordResult describeOpportunity(TMarketoInputProperties parameters) {
+        String resource = API_PATH_URI_DESCRIBE;
+        if (parameters.inputOperation.getValue().equals(InputOperation.OpportunityRole)) {
+            resource = API_PATH_OPPORTUNITY_ROLE + API_PATH_URI_DESCRIBE;
+        }
         current_uri = new StringBuilder(basicPath)//
                 .append(API_PATH_OPPORTUNITIES)//
-                .append(API_PATH_URI_DESCRIBE)//
+                .append(resource)//
                 .append(fmtParams(FIELD_ACCESS_TOKEN, accessToken, true));
         LOG.warn("describeOpportunity : {}.", current_uri);
         MarketoRecordResult mkto = new MarketoRecordResult();
@@ -96,36 +103,62 @@ public class MarketoOpportunityClient extends MarketoCompanyClient {
      * @return
      */
     public MarketoRecordResult getOpportunities(TMarketoInputProperties parameters, String offset) {
+        String resource = "";
+        if (parameters.inputOperation.getValue().equals(InputOperation.OpportunityRole)) {
+            resource = API_PATH_OPPORTUNITY_ROLE;
+        }
         String filterType = parameters.customObjectFilterType.getValue();
         String filterValues = parameters.customObjectFilterValues.getValue();
-        // if fields is unset : marketoGuid, dedupeFields (defined in mkto), updatedAt, createdAt will be returned.
+        Boolean useCompoundKey = parameters.useCompoundKey.getValue();
         List<String> fields = new ArrayList<>();
         for (String f : parameters.getSchemaFields()) {
             if (!f.equals(MarketoConstants.FIELD_MARKETO_GUID) && !f.equals(MarketoConstants.FIELD_SEQ)) {
                 fields.add(f);
             }
         }
-        //
         int batchLimit = parameters.batchSize.getValue() > REST_API_BATCH_LIMIT ? REST_API_BATCH_LIMIT
                 : parameters.batchSize.getValue();
-
+        JsonElement key = parameters.compoundKey.getKeyValuesAsJson();
+        //
         current_uri = new StringBuilder(basicPath)//
                 .append(API_PATH_OPPORTUNITIES)//
+                .append(resource)//
                 .append(API_PATH_JSON_EXT)//
                 .append(fmtParams(FIELD_ACCESS_TOKEN, accessToken, true))//
-                .append(fmtParams(QUERY_METHOD, QUERY_METHOD_GET)).append(fmtParams("filterType", filterType))//
-                .append(fmtParams("filterValues", filterValues))//
                 .append(fmtParams(FIELD_BATCH_SIZE, batchLimit));
-        if (!fields.isEmpty()) {
-            current_uri.append(fmtParams(FIELD_FIELDS, csvString(fields.toArray())));
-        }
         if (offset != null) {
             current_uri.append(fmtParams(FIELD_NEXT_PAGE_TOKEN, offset));
         }
-        LOG.debug("getOpportunities : {}.", current_uri);
+        //
         MarketoRecordResult mkto = new MarketoRecordResult();
         try {
-            mkto = executeGetRequest(parameters.schemaInput.schema.getValue());
+            if (useCompoundKey) {
+                current_uri.append(fmtParams(QUERY_METHOD, QUERY_METHOD_GET));
+
+                JsonObject inputJson = new JsonObject();
+                Gson gson = new Gson();
+                if (!fields.isEmpty()) {
+                    inputJson.add(FIELD_FIELDS, gson.toJsonTree(fields));
+                }
+                StringBuilder input = new StringBuilder();
+                input.append(FIELD_FILTER_TYPE + "=" + filterType);
+                input.append(fmtParams(FIELD_FILTER_VALUES, filterValues));
+                if (!fields.isEmpty()) {
+                    input.append(fmtParams(FIELD_FIELDS, csvString(fields.toArray())));
+                }
+                LOG.debug("getOpportunities: {} body : {}", current_uri, input);
+                mkto = executeFakeGetRequest(parameters.schemaInput.schema.getValue(), input.toString());
+
+            } else {
+                current_uri.append(fmtParams("filterType", filterType))//
+                        .append(fmtParams("filterValues", filterValues));//
+                if (!fields.isEmpty()) {
+                    current_uri.append(fmtParams(FIELD_FIELDS, csvString(fields.toArray())));
+                }
+                LOG.debug("getOpportunities : {}.", current_uri);
+                mkto = executeGetRequest(parameters.schemaInput.schema.getValue());
+            }
+
         } catch (MarketoException e) {
             LOG.error("{}.", e);
             mkto.setSuccess(false);
@@ -133,7 +166,6 @@ public class MarketoOpportunityClient extends MarketoCompanyClient {
             mkto.setErrors(Arrays.asList(e.toMarketoError()));
         }
         return mkto;
-
     }
 
     /**
@@ -144,7 +176,56 @@ public class MarketoOpportunityClient extends MarketoCompanyClient {
      * @return
      */
     public MarketoSyncResult syncOpportunities(TMarketoOutputProperties parameters, List<IndexedRecord> records) {
-        return null;
+        String resource = "";
+        if (parameters.outputOperation.getValue().equals(OutputOperation.syncOpportunityRoles)) {
+            resource = API_PATH_OPPORTUNITY_ROLE;
+        }
+        String action = parameters.customObjectSyncAction.getValue().name();
+        String dedupeBy = parameters.customObjectDedupeBy.getValue();
+        JsonObject inputJson = new JsonObject();
+        Gson gson = new Gson();
+        inputJson.addProperty("action", action);
+        if (!dedupeBy.isEmpty()) {
+            inputJson.addProperty("dedupeBy", dedupeBy);
+        }
+        List<Map<String, Object>> opportunities = new ArrayList<>();
+        for (IndexedRecord r : records) {
+            Map<String, Object> opportunity = new HashMap<>();
+            for (Field f : r.getSchema().getFields()) {
+                opportunity.put(f.name(), r.get(f.pos()));
+            }
+            opportunities.add(opportunity);
+        }
+        inputJson.add(FIELD_INPUT, gson.toJsonTree(opportunities));
+        MarketoSyncResult mkto = new MarketoSyncResult();
+
+        current_uri = new StringBuilder(basicPath)//
+                .append(API_PATH_OPPORTUNITIES)//
+                .append(resource)//
+                .append(API_PATH_JSON_EXT)//
+                .append(fmtParams(FIELD_ACCESS_TOKEN, accessToken, true));//
+
+        try {
+            LOG.debug("syncOpportunities {}{}.", current_uri, inputJson);
+            SyncResult rs = (SyncResult) executePostRequest(SyncResult.class, inputJson);
+            //
+            mkto.setRequestId(REST + "::" + rs.getRequestId());
+            mkto.setStreamPosition(rs.getNextPageToken());
+            mkto.setSuccess(rs.isSuccess());
+            if (mkto.isSuccess()) {
+                mkto.setRecordCount(rs.getResult().size());
+                mkto.setRemainCount(mkto.getStreamPosition() != null ? mkto.getRecordCount() : 0);
+                mkto.setRecords(rs.getResult());
+            } else {
+                mkto.setRecordCount(0);
+                mkto.setErrors(Arrays.asList(rs.getErrors().get(0)));
+            }
+            LOG.debug("rs = {}.", rs);
+        } catch (MarketoException e) {
+            mkto.setSuccess(false);
+            mkto.setErrors(Arrays.asList(e.toMarketoError()));
+        }
+        return mkto;
     }
 
     /**
@@ -156,6 +237,10 @@ public class MarketoOpportunityClient extends MarketoCompanyClient {
      * @return
      */
     public MarketoSyncResult deleteOpportunities(TMarketoOutputProperties parameters, List<IndexedRecord> records) {
+        String resource = "";
+        if (parameters.outputOperation.getValue().equals(OutputOperation.deleteOpportunityRoles)) {
+            resource = API_PATH_OPPORTUNITY_ROLE;
+        }
         String deleteBy = parameters.customObjectDeleteBy.getValue().name();
         JsonObject inputJson = new JsonObject();
         Gson gson = new Gson();
@@ -164,21 +249,22 @@ public class MarketoOpportunityClient extends MarketoCompanyClient {
         }
         List<Map<String, Object>> opportunities = new ArrayList<>();
         for (IndexedRecord r : records) {
-            Map<String, Object> lead = new HashMap<>();
+            Map<String, Object> opportunity = new HashMap<>();
             for (Field f : r.getSchema().getFields()) {
-                lead.put(f.name(), r.get(f.pos()));
+                opportunity.put(f.name(), r.get(f.pos()));
             }
-            opportunities.add(lead);
+            opportunities.add(opportunity);
         }
         inputJson.add(FIELD_INPUT, gson.toJsonTree(opportunities));
         //
         current_uri = new StringBuilder(basicPath)//
                 .append(API_PATH_OPPORTUNITIES)//
+                .append(resource)//
                 .append(API_PATH_URI_DELETE)//
                 .append(fmtParams(FIELD_ACCESS_TOKEN, accessToken, true));
         MarketoSyncResult mkto = new MarketoSyncResult();
         try {
-            LOG.debug("deleteOpportunity {}{}.", current_uri, inputJson);
+            LOG.debug("deleteOpportunities {}{}.", current_uri, inputJson);
             SyncResult rs = (SyncResult) executePostRequest(SyncResult.class, inputJson);
             mkto.setRequestId(REST + "::" + rs.getRequestId());
             mkto.setStreamPosition(rs.getNextPageToken());

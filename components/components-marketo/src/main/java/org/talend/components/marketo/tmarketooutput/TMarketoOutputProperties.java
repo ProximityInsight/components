@@ -54,10 +54,14 @@ public class TMarketoOutputProperties extends MarketoComponentProperties {
         syncLead, // This operation requests an insert or update operation for a lead record.
         syncMultipleLeads, // This operation requests an insert or update operation for lead records in batch.
         deleteLeads, // REST only
-        syncCustomObjects, // REST only
-        deleteCustomObjects, // REST only
-        syncCompanies, // REST only
-        deleteCompanies // REST only
+        syncCustomObjects,
+        deleteCustomObjects,
+        syncCompanies,
+        deleteCompanies,
+        syncOpportunities,
+        deleteOpportunities,
+        syncOpportunityRoles,
+        deleteOpportunityRoles
     }
 
     public enum OperationType {

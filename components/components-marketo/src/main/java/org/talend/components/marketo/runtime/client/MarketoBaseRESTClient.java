@@ -253,14 +253,12 @@ public abstract class MarketoBaseRESTClient extends MarketoClient {
                 throw new MarketoException(REST, responseCode, "Request failed! Please check your request setting!");
             }
         } catch (IOException e) {
-            // com.google.gson.JsonSyntaxException: java.net.SocketException: Connection reset
             LOG.error("GET request failed: {}", e.getMessage());
             throw new MarketoException(REST, e.getMessage());
         }
     }
 
     private String convertStreamToString(InputStream inputStream) {
-
         try {
             return new Scanner(inputStream).useDelimiter("\\A").next();
         } catch (NoSuchElementException e) {
@@ -268,32 +266,40 @@ public abstract class MarketoBaseRESTClient extends MarketoClient {
         }
     }
 
-    public RequestResult executeFakeGetRequest(Class<?> resultClass, String input) throws MarketoException {
+    public InputStreamReader httpFakeGet(String content) throws MarketoException {
         try {
-            current_uri.append(fmtParams(QUERY_METHOD, QUERY_METHOD_GET));
             URL url = new URL(current_uri.toString());
             HttpsURLConnection urlConn = (HttpsURLConnection) url.openConnection();
             urlConn.setRequestMethod(QUERY_METHOD_POST);
-            urlConn.setRequestProperty(REQUEST_PROPERTY_CONTENT_TYPE, "application/x-www-form-urlencoded");
+            urlConn.setRequestProperty(REQUEST_PROPERTY_CONTENT_TYPE, REQUEST_VALUE_APPLICATION_JSON);
             urlConn.setRequestProperty(REQUEST_PROPERTY_ACCEPT, REQUEST_VALUE_TEXT_JSON);
             urlConn.setDoOutput(true);
             OutputStreamWriter wr = new OutputStreamWriter(urlConn.getOutputStream());
-            wr.write(input);
+            wr.write(content);
             wr.flush();
             int responseCode = urlConn.getResponseCode();
             if (responseCode == 200) {
                 InputStream inStream = urlConn.getInputStream();
                 InputStreamReader reader = new InputStreamReader(inStream);
-                Gson gson = new Gson();
-                return (RequestResult) gson.fromJson(reader, resultClass);
+                return reader;
             } else {
-                LOG.error("GET request failed: {}", responseCode);
+                LOG.error("POST request failed: {}", responseCode);
                 throw new MarketoException(REST, responseCode, "Request failed! Please check your request setting!");
             }
         } catch (IOException e) {
-            LOG.error("GET request failed: {}", e.getMessage());
+            LOG.error("POST request failed: {}", e.getMessage());
             throw new MarketoException(REST, e.getMessage());
         }
+    }
+
+    public RequestResult executeFakeGetRequest(Class<?> resultClass, String input) throws MarketoException {
+        return (RequestResult) new Gson().fromJson(httpFakeGet(input), resultClass);
+    }
+
+    public MarketoRecordResult executeFakeGetRequest(Schema schema, String input) throws MarketoException {
+        // httpFakeGet(input);
+        // TODO implement and refactor
+        return null;
     }
 
     public RequestResult executePostRequest(Class<?> resultClass, JsonObject inputJson) throws MarketoException {
