@@ -115,21 +115,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.talend.components</groupId>
-			<artifactId>components-jdbc-definition</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.talend.components</groupId>
 			<artifactId>components-jdbc-runtime</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.talend.components</groupId>
-			<artifactId>components-jdbc-runtime-beam</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
@@ -362,45 +348,25 @@
 					</execution>
 				</executions>
 			</plugin>
-
 			<plugin>
-				<!-- this creates a temporary maven repo (install goal) and then launches 
-					the integration tests located in src/it (run goal) using that local repo -->
-				<artifactId>maven-invoker-plugin</artifactId>
-				<version>2.0.0-TALEND</version>
-				<configuration>
-					<projectsDirectory>src/it</projectsDirectory>
-					<cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-				</configuration>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>integration-tests</id>
-						<phase>integration-test</phase>
 						<goals>
-							<goal>install</goal>
-							<goal>run</goal>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
 						</goals>
 						<configuration>
-							<skipInstallation>${really.skip.tests}</skipInstallation>
-							<skipInvocation>${really.skip.tests}</skipInvocation>
-
-							<localRepositoryPath>${project.build.directory}/it-repo</localRepositoryPath>
-							<settingsFile>src/it/settings.xml</settingsFile>
-							<extraArtifacts>
-								<extraArtifact>org.talend.components:components-api-service-rest:${project.version}:jar:tests</extraArtifact>
-							</extraArtifacts>
-							<pomIncludes>
-								<pomInclude>*/pom.xml</pomInclude>
-							</pomIncludes>
-							<goals>
-								<goal>clean</goal>
-								<goal>verify</goal>
-							</goals>
+							<classpathDependencyExcludes>
+								<classpathDependencyExclude>org.talend.components:components-jdbc-runtime</classpathDependencyExclude>
+							</classpathDependencyExcludes>
 						</configuration>
 					</execution>
 
 				</executions>
 			</plugin>
+
 		</plugins>
 		<resources>
 			<resource>

@@ -13,11 +13,12 @@
 
 package org.talend.components.service.rest;
 
-import static com.jayway.restassured.RestAssured.*;
-import static java.util.Collections.*;
-import static org.junit.Assert.*;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.*;
-import static org.springframework.http.MediaType.*;
+import static com.jayway.restassured.RestAssured.given;
+import static java.util.Collections.singletonList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,9 +62,9 @@ import com.jayway.restassured.response.Response;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = RANDOM_PORT)
 @TestPropertySource(properties = { "server.contextPath=" })
-public class JdbcComponentIntegrationTest {
+public class JdbcComponentTestIT {
 
-    private static final Logger log = LoggerFactory.getLogger(JdbcComponentIntegrationTest.class);
+    private static final Logger log = LoggerFactory.getLogger(JdbcComponentTestIT.class);
 
     public static final String DATA_STORE_DEFINITION_NAME = "JDBCDatastore";
 
@@ -86,7 +87,8 @@ public class JdbcComponentIntegrationTest {
         db = new EmbeddedDatabaseBuilder().generateUniqueName(true).setType(EmbeddedDatabaseType.DERBY).setName("testdb")
                 .setScriptEncoding("UTF-8").addScript("/org/talend/components/service/rest/schema.sql")
                 .addScript("/org/talend/components/service/rest/data_users.sql").build();
-        // addresss: Starting embedded database: url='jdbc:derby:memory:2dc86c66-5d3a-48fd-b903-56aa27d20e3b;create=true',
+        // addresss: Starting embedded database:
+        // url='jdbc:derby:memory:2dc86c66-5d3a-48fd-b903-56aa27d20e3b;create=true',
         // username='sa'
         try (Connection connection = db.getConnection()) {
             dbUrl = connection.getMetaData().getURL();
@@ -182,7 +184,9 @@ public class JdbcComponentIntegrationTest {
         assertEquals(errorMessage, expected[5], record.get(5).toString());
     }
 
-    /** Quick and dirty to parse the test SQL for the inserted records. The stream must be closed to close the source. **/
+    /**
+     * Quick and dirty to parse the test SQL for the inserted records. The stream must be closed to close the source.
+     **/
     private Stream<String[]> getInsertedValues() throws IOException {
         BufferedReader bufferedReader = new BufferedReader(
                 new InputStreamReader(getClass().getResourceAsStream("data_users.sql")));
