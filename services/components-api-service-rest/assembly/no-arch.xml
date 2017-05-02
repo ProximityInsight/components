@@ -8,8 +8,11 @@
     <fileSets>
         <!-- configuration files -->
         <fileSet>
-            <directory>${project.basedir}/config</directory>
+            <directory>${project.basedir}/target/classes</directory>
             <outputDirectory>${file.separator}config</outputDirectory>
+            <excludes>
+            	<exclude>banner.txt</exclude>
+            </excludes>
             <includes>
                 <include>*.*</include>
             </includes>
@@ -17,7 +20,7 @@
         <!-- Start up scripts -->
         <fileSet>
             <directory>${project.basedir}/scripts</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>${file.separator}</outputDirectory>
             <filtered>true</filtered>
             <fileMode>0755</fileMode>
             <includes>

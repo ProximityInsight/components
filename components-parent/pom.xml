@@ -93,7 +93,11 @@
 						<artifactId>logback-classic</artifactId>
 					</exclusion>
 				</exclusions>
-
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>1.1.9</version>
 			</dependency>
 			<dependency>
 				<groupId>biz.aQute.bnd</groupId>
@@ -182,7 +186,7 @@
 				<artifactId>components-api</artifactId>
 				<version>${components.version}</version>
 				<classifier>bundle</classifier>
-			</dependency>			
+			</dependency>
 			<dependency>
 				<groupId>org.talend.components</groupId>
 				<artifactId>components-api-service-common</artifactId>
@@ -215,12 +219,6 @@
 				<groupId>org.talend.components</groupId>
 				<artifactId>components-api-service-rest</artifactId>
 				<version>${components.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>ch.qos.logback</groupId>
-						<artifactId>logback-classic</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.talend.components</groupId>

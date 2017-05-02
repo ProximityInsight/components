@@ -9,8 +9,11 @@
     <fileSets>
         <!-- configuration files -->
         <fileSet>
-            <directory>${project.basedir}/config</directory>
-            <outputDirectory>${file.separator}/config</outputDirectory>
+            <directory>${project.basedir}/target/classes</directory>
+            <outputDirectory>${file.separator}config</outputDirectory>
+            <excludes>
+            	<exclude>banner.txt</exclude>
+            </excludes>
             <includes>
                 <include>*.*</include>
             </includes>
