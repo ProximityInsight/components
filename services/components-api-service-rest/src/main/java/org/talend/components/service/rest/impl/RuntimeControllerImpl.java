@@ -1,4 +1,4 @@
-//==============================================================================
+// ==============================================================================
 //
 // Copyright (C) 2006-2017 Talend Inc. - www.talend.com
 //
@@ -9,14 +9,14 @@
 // along with this program; if not, write to Talend SA
 // 9 rue Pages 92150 Suresnes, France
 //
-//==============================================================================
+// ==============================================================================
 
 package org.talend.components.service.rest.impl;
 
-import static com.google.common.collect.Lists.*;
-import static java.lang.Integer.*;
-import static java.util.Collections.*;
-import static org.apache.commons.lang3.Validate.*;
+import static com.google.common.collect.Lists.newArrayList;
+import static java.lang.Integer.MAX_VALUE;
+import static java.util.Collections.emptyList;
+import static org.apache.commons.lang3.Validate.notNull;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -59,9 +59,9 @@ public class RuntimeControllerImpl implements RuntimesController {
 
     @Override
     public ResponseEntity<ValidationResultsDto> validateDataStoreConnection(String dataStoreDefinitionName,
-                                                                            PropertiesDto propertiesContainer) {
-        final DatastoreDefinition<DatastoreProperties> definition = propertiesHelpers.getDataStoreDefinition(
-                dataStoreDefinitionName);
+            PropertiesDto propertiesContainer) {
+        final DatastoreDefinition<DatastoreProperties> definition = propertiesHelpers
+                .getDataStoreDefinition(dataStoreDefinitionName);
         notNull(definition, "Could not find data store definition of name %s", dataStoreDefinitionName);
         DatastoreProperties properties = propertiesHelpers.propertiesFromDto(propertiesContainer);
 
@@ -86,25 +86,25 @@ public class RuntimeControllerImpl implements RuntimesController {
 
     @Override
     public Void getDatasetData(String datasetDefinitionName, //
-                               PropertiesDto connectionInfo, //
-                               Integer from, //
-                               Integer limit, //
-                               OutputStream response) {
+            PropertiesDto connectionInfo, //
+            Integer from, //
+            Integer limit, //
+            OutputStream response) {
         return useDatasetRuntime(datasetDefinitionName, connectionInfo, new DatasetContentWriter(response, limit, true));
     }
 
     @Override
     public Void getDatasetDataAsBinary(String datasetDefinitionName, //
-                                       PropertiesDto connectionInfo, //
-                                       Integer from,  //
-                                       Integer limit,  //
-                                        OutputStream response) {
+            PropertiesDto connectionInfo, //
+            Integer from, //
+            Integer limit, //
+            OutputStream response) {
         return useDatasetRuntime(datasetDefinitionName, connectionInfo, new DatasetContentWriter(response, limit, false));
     }
 
     private <T> T useDatasetRuntime(String datasetDefinitionName, //
-                                    PropertiesDto formData, //
-                                    Function<DatasetRuntime<DatasetProperties<DatastoreProperties>>, T> consumer) {
+            PropertiesDto formData, //
+            Function<DatasetRuntime<DatasetProperties<DatastoreProperties>>, T> consumer) {
 
         // 1) get dataset properties from supplied data
         DatasetProperties datasetProperties = propertiesHelpers.propertiesFromDto(formData);
@@ -136,7 +136,7 @@ public class RuntimeControllerImpl implements RuntimesController {
 
         /**
          * @param limit the number of records to write
-         * @param json  true to write JSon, false for binary Avro
+         * @param json true to write JSon, false for binary Avro
          */
         DatasetContentWriter(OutputStream output, Integer limit, boolean json) {
             this.output = output;

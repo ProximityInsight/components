@@ -12,7 +12,7 @@
 // ==============================================================================
 package org.talend.components.service.rest.configuration;
 
-import static org.slf4j.LoggerFactory.*;
+import static org.slf4j.LoggerFactory.getLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -60,15 +60,15 @@ public class ComponentsRegistrySetup {
 
     @Bean
     public ComponentService getComponentService() {
-        return new ComponentServiceImpl(getComponentRegistry());
+        return new ComponentServiceImpl(getDefinitionRegistry());
     }
 
     @Bean
     public DefinitionRegistryService getDefintionRegistryService() {
-        return getComponentRegistry();
+        return getDefinitionRegistry();
     }
 
-    private DefinitionRegistry getComponentRegistry() {
+    private DefinitionRegistry getDefinitionRegistry() {
         if (definitionRegistry == null) {
             definitionRegistry = createDefinitionRegistry();
         } // else return existing one
@@ -82,16 +82,14 @@ public class ComponentsRegistrySetup {
                 .get(TCOMP_COMPONENTS_LIST_RESOURCE_NAME);
         if (propertySource != null) {
             LOGGER.info("Component list properties found");
-        } else {
-            LOGGER.warn("Component list properties not found");
-        }
-        if (propertySource != null) {
             String compListStr = (String) propertySource.getProperty(TCOMP_COMPONENTS_LIST_PROP);
             if (compListStr != null) {
                 definitionRegistry = ServiceSpiFactory.createDefinitionRegistry(extractComponentsUrls(compListStr));
             } // else return the default registry
-        } // else return the default registry
-            // using the spi registry
+        } else {// else return the default registry
+            LOGGER.warn("Component list properties not found");
+        }
+        // using the spi registry
         return ServiceSpiFactory.getDefinitionRegistry();
     }
 

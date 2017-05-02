@@ -29,8 +29,8 @@ import org.talend.components.api.service.common.ComponentServiceImpl;
 import org.talend.components.api.service.common.DefinitionRegistry;
 
 /**
- * Provide a {@link DefinitionRegistry} and {@link ComponentService} based on the jars currently available in the
- * classpath.
+ * creates a {@link DefinitionRegistry} and {@link ComponentService} based on the jars currently available in the
+ * classpath using the JDK ServiceLoader mechanism for registering the definitions.
  */
 /**
  *
@@ -85,7 +85,7 @@ public class ServiceSpiFactory {
     private static URL[] readAllComponentDependencies(URL[] componentUrls) {
         Set<URL> dependenciesUrl = new HashSet<>(componentUrls.length * 3);// assuming at least 3 deps
         for (URL compURL : componentUrls) {
-            try{
+            try {
                 List<URL> componentDepsURLs = DependenciesReader.extractDependencies(compURL);
                 // resolve all url, this means they can be downloaded from a remote maven repo too.
                 LOG.info("resolving dependencies for [" + compURL + "]");
@@ -97,7 +97,7 @@ public class ServiceSpiFactory {
                     LOG.error("Error when resolving dependencies for [" + compURL + "]:" + e);
                 }
                 dependenciesUrl.addAll(componentDepsURLs);
-            }catch(ComponentException ce){
+            } catch (ComponentException ce) {
                 LOG.error("Failed to load component from URL[" + compURL + "] because :" + ce.getMessage());
             }
         }
@@ -144,7 +144,7 @@ public class ServiceSpiFactory {
         return componentService;
     }
 
-    static void resetDefinitionRegistryOnlyForTest(){
+    static void resetDefinitionRegistryOnlyForTest() {
         defReg = null;
     }
 
