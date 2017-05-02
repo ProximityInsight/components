@@ -15,7 +15,10 @@ package org.talend.components.marketo.tmarketoinput;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.talend.components.marketo.MarketoConstants.DATETIME_PATTERN_PARAM;
 import static org.talend.components.marketo.MarketoConstants.getRESTSchemaForGetLeadOrGetMultipleLeads;
+import static org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.InputOperation.Company;
 import static org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.InputOperation.CustomObject;
+import static org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.InputOperation.Opportunity;
+import static org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.InputOperation.OpportunityRole;
 import static org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.InputOperation.getLead;
 import static org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.InputOperation.getLeadActivity;
 import static org.talend.components.marketo.tmarketoinput.TMarketoInputProperties.InputOperation.getLeadChanges;
@@ -40,6 +43,7 @@ import org.talend.components.api.component.ISchemaListener;
 import org.talend.components.api.component.PropertyPathConnector;
 import org.talend.components.marketo.MarketoComponentProperties;
 import org.talend.components.marketo.MarketoConstants;
+import org.talend.components.marketo.helpers.CompoundKeyTable;
 import org.talend.components.marketo.helpers.IncludeExcludeTypesTable;
 import org.talend.components.marketo.helpers.MarketoColumnMappingsTable;
 import org.talend.components.marketo.runtime.MarketoSourceOrSink;
@@ -64,7 +68,10 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
         getMultipleLeads, // retrieves lead records in batch.
         getLeadActivity, // retrieves the history of activity records for a single lead identified by the provided key.
         getLeadChanges, // checks the changes on Lead data in Marketo DB.
-        CustomObject // CO Operation
+        CustomObject, // CO Operation
+        Company, //
+        Opportunity, //
+        OpportunityRole //
     }
 
     public enum LeadSelector {
@@ -305,6 +312,19 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
 
     public transient PresentationItem fetchCustomObjectSchema = new PresentationItem("fetchCustomObjectSchema", "Fetch schema");
 
+    public Property<Boolean> useCompoundKey = newBoolean("useCompoundKey");
+
+    public CompoundKeyTable compoundKey = new CompoundKeyTable("compoundKey");
+
+    // Companies / Opportunities / OpportunityRoles
+
+    public enum StandardAction {
+        describe,
+        get
+    }
+
+    public Property<StandardAction> standardAction = newEnum("standardAction", StandardAction.class);
+
     //
     private static final long serialVersionUID = 3335746787979781L;
 
@@ -351,6 +371,12 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
         customObjectNames.setValue("");
         customObjectFilterType.setValue("");
         customObjectFilterValues.setValue("");
+        useCompoundKey.setValue(false);
+        //
+        // Opportunities / OpportunityRoles
+        //
+        standardAction.setPossibleValues((Object[]) StandardAction.values());
+        standardAction.setValue(StandardAction.describe);
         //
         schemaInput.schema.setValue(getRESTSchemaForGetLeadOrGetMultipleLeads());
         beforeMappingInput();
@@ -369,13 +395,17 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
 
         Form mainForm = getForm(Form.MAIN);
         mainForm.addRow(inputOperation);
-        // Custom Objects & Campaigns
+        // Custom Objects, Campaigns & Opportunities
         mainForm.addColumn(customObjectAction);
+        mainForm.addColumn(standardAction);
         mainForm.addRow(customObjectName);
         mainForm.addColumn(Widget.widget(fetchCustomObjectSchema).setWidgetType(Widget.BUTTON_WIDGET_TYPE).setLongRunning(true));
         mainForm.addRow(customObjectNames);
         mainForm.addRow(customObjectFilterType);
         mainForm.addColumn(customObjectFilterValues);
+        mainForm.addRow(useCompoundKey);
+        mainForm.addRow(widget(compoundKey).setWidgetType(Widget.TABLE_WIDGET_TYPE));
+
         //
         mainForm.addRow(widget(mappingInput).setWidgetType(Widget.TABLE_WIDGET_TYPE));
         // leadSelector
@@ -450,6 +480,10 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
             form.getWidget(customObjectNames.getName()).setVisible(false);
             form.getWidget(customObjectFilterType.getName()).setVisible(false);
             form.getWidget(customObjectFilterValues.getName()).setVisible(false);
+            form.getWidget(useCompoundKey.getName()).setVisible(false);
+            form.getWidget(compoundKey.getName()).setVisible(false);
+            //
+            form.getWidget(standardAction.getName()).setVisible(false);
             //
             // enable widgets according params
             //
@@ -542,8 +576,41 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
                 case get:
                     form.getWidget(customObjectName.getName()).setVisible(true);
                     form.getWidget(fetchCustomObjectSchema.getName()).setVisible(true);
+                    form.getWidget(useCompoundKey.getName()).setVisible(true);
+                    form.getWidget(customObjectFilterType.getName()).setVisible(!useCompoundKey.getValue());
+                    form.getWidget(customObjectFilterValues.getName()).setVisible(!useCompoundKey.getValue());
+                    form.getWidget(compoundKey.getName()).setVisible(useCompoundKey.getValue());
+                    form.getWidget(batchSize.getName()).setVisible(true);
+                    break;
+                }
+            }
+            // Companies
+            // TODO add fetch schema for companies
+            if (inputOperation.getValue().equals(Company)) {
+                form.getWidget(mappingInput.getName()).setVisible(false);
+                form.getWidget(standardAction.getName()).setVisible(true);
+                switch (standardAction.getValue()) {
+                case describe:
+                    break;
+                case get:
                     form.getWidget(customObjectFilterType.getName()).setVisible(true);
                     form.getWidget(customObjectFilterValues.getName()).setVisible(true);
+                    form.getWidget(batchSize.getName()).setVisible(true);
+                    break;
+                }
+            }
+            // Opportunities*
+            if (inputOperation.getValue().equals(Opportunity) || inputOperation.getValue().equals(OpportunityRole)) {
+                form.getWidget(mappingInput.getName()).setVisible(false);
+                form.getWidget(standardAction.getName()).setVisible(true);
+                switch (standardAction.getValue()) {
+                case describe:
+                    break;
+                case get:
+                    form.getWidget(useCompoundKey.getName()).setVisible(true);
+                    form.getWidget(customObjectFilterType.getName()).setVisible(!useCompoundKey.getValue());
+                    form.getWidget(customObjectFilterValues.getName()).setVisible(!useCompoundKey.getValue());
+                    form.getWidget(compoundKey.getName()).setVisible(useCompoundKey.getValue());
                     form.getWidget(batchSize.getName()).setVisible(true);
                     break;
                 }
@@ -553,7 +620,16 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
 
     public ValidationResult validateInputOperation() {
         if (isApiSOAP()) {
-            if (inputOperation.getValue().equals(CustomObject)) {
+            switch (inputOperation.getValue()) {
+            case getLead:
+            case getMultipleLeads:
+            case getLeadActivity:
+            case getLeadChanges:
+                return ValidationResult.OK;
+            case CustomObject:
+            case Company:
+            case Opportunity:
+            case OpportunityRole:
                 ValidationResult vr = new ValidationResult();
                 vr.setStatus(Result.ERROR);
                 vr.setMessage(messages.getMessage("error.validation.customobjects.nosoap"));
@@ -620,6 +696,10 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
         afterInputOperation();
     }
 
+    public void afterStandardAction() {
+        afterInputOperation();
+    }
+
     public void afterLeadSelectorSOAP() {
         refreshLayout(getForm(Form.MAIN));
     }
@@ -637,6 +717,10 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
     }
 
     public void afterFetchCustomObjectSchema() {
+        refreshLayout(getForm(Form.MAIN));
+    }
+
+    public void afterUseCompoundKey() {
         refreshLayout(getForm(Form.MAIN));
     }
 
@@ -680,8 +764,23 @@ public class TMarketoInputProperties extends MarketoComponentProperties {
                     break;
                 }
                 break;
+            case Company:
+                switch (standardAction.getValue()) {
+                case describe:
+                    s = MarketoConstants.getCustomObjectDescribeSchema();
+                    break;
+                case get:
+                    s = MarketoConstants.getCompanySchema();
+                    break;
+                }
+                break;
+            case Opportunity:
+                break;
+            case OpportunityRole:
+                break;
             }
         }
+
         LOG.debug("[updateSchemaRelated] API({}) Replacing Schema `{}` by Schema `{}`.", getApiMode(),
                 schemaInput.schema.getValue().getName(), s.getName());
         schemaInput.schema.setValue(s);

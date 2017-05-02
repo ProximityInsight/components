@@ -50,6 +50,8 @@ public class MarketoConstants {
 
     public static final String FIELD_MARKETO_GUID = "marketoGUID";
 
+    public static final String FIELD_ID = "id";
+
     public static final String FIELD_SEQ = "seq";
 
     public static final String FIELD_REASON = "reason";
@@ -401,6 +403,29 @@ public class MarketoConstants {
                 .endRecord();
         s.addProp(SchemaConstants.TALEND_IS_LOCKED, "true");
         return s;
+    }
+
+    public static Schema getCompanySchema() {
+        return record("CompanyREST").fields()//
+                .name(FIELD_ID).prop(SchemaConstants.TALEND_COLUMN_IS_KEY, "true").type().intType().noDefault()//
+                .name(FIELD_SEQ).type().intType().noDefault()//
+                .name(FIELD_CREATED_AT) //
+                .prop(SchemaConstants.TALEND_COLUMN_PATTERN, DATETIME_PATTERN_REST)//
+                .prop(SchemaConstants.JAVA_CLASS_FLAG, Date.class.getCanonicalName()) //
+                .type(AvroUtils._date()).noDefault()//
+                .name(FIELD_UPDATED_AT) //
+                .prop(SchemaConstants.TALEND_COLUMN_PATTERN, DATETIME_PATTERN_REST)//
+                .prop(SchemaConstants.JAVA_CLASS_FLAG, Date.class.getCanonicalName()) //
+                .type(AvroUtils._date()).noDefault()//
+                // .name(FIELD_DEDUPE_FIELDS).type().nullable().stringType().noDefault()//
+                //
+                .endRecord();
+    }
+
+    public static Schema getCompanySyncSchema() {
+        return record("CompanySyncREST").fields()//
+                .name(FIELD_ID).prop(SchemaConstants.TALEND_COLUMN_IS_KEY, "true").type().intType().noDefault()//
+                .endRecord();
     }
 
 }
